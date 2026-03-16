@@ -205,6 +205,43 @@
         const mobileBtn = document.getElementById('mobile-menu');
         const mainNav = document.querySelector('.main-nav');
         mobileBtn.addEventListener('click', () => { mobileBtn.classList.toggle('active'); mainNav.classList.toggle('active'); });
+
+        (function() {
+  let analyticsLoaded = false;
+
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+    analyticsLoaded = true;
+
+    // Load Google Analytics script
+    var gtagScript = document.createElement('script');
+    gtagScript.async = true;
+    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-EMQGPPR387";
+    document.head.appendChild(gtagScript);
+
+    // Initialize GA
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+
+    gtag('js', new Date());
+    gtag('config', 'G-EMQGPPR387');
+  }
+
+  // Events that count as user interaction
+  const events = ['scroll','mousemove','click','touchstart','keydown'];
+
+  function triggerAnalytics() {
+    loadAnalytics();
+    events.forEach(event => window.removeEventListener(event, triggerAnalytics));
+  }
+
+  events.forEach(event => window.addEventListener(event, triggerAnalytics, {passive:true}));
+
+  // Auto load after 3 seconds if no interaction
+  setTimeout(loadAnalytics, 3000);
+
+})();
     </script>
 </body>
 </html>
