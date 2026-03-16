@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- ============================================== -->
+    <!-- 1. CORE HOMEPAGE (Priority: 1.0)               -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/</loc>
+        <lastmod>2026-02-24</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 2. MAIN SILO HUBS (Priority: 0.9)              -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/app/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/reviews/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/sports/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 3. PROMO CODE & BONUS SILO (Priority: 0.8)     -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/promo-code/casino-bonus/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/sports-bonus/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/main-vs-bonus-account/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/1win-token/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/existing-users/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/promo-code/no-deposit/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 4. TRUST, SAFETY & LEGAL SILO (Priority: 0.8)  -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/reviews/is-1win-safe/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/reviews/is-1win-legal/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/reviews/is-1win-real-or-fake/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/reviews/1win-app-real-or-fake/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 5. APP & MOBILE SILO (Priority: 0.8)           -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/app/android/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/app/ios/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/app/pc/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/app/update/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/app/not-working/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 6. GAMES & CASINO SILO (Priority: 0.8)         -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/games/aviator/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority> <!-- Set higher because Aviator is a massive keyword -->
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/aviator-app/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/lucky-jet/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/plinko/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/mines/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/slots/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/games/live-casino/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 7. SPORTS BETTING SILO (Priority: 0.8)         -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/sports/cricket/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/sports/football/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/sports/tennis/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/sports/esports/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/sports/live-streaming/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 8. UTILITY & HOW-TO SILO (Priority: 0.8)       -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/guides/registration/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/how-to-withdraw/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/deposit/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/how-to-delete-account/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/kyc-verification/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/forgot-password/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/guides/customer-care/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 9. GEO-TARGETED SILO (Priority: 0.8)           -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/geo/india/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/pakistan/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/bangladesh/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/brazil/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/greece/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/nigeria/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/geo/kenya/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ============================================== -->
+    <!-- 10. E-E-A-T & TRUST PAGES (Priority: 0.5)      -->
+    <!-- ============================================== -->
+    <url>
+        <loc>https://grantchester.info/about/</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/contact/</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/privacy-policy/</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/terms-and-conditions/</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://grantchester.info/responsible-gambling/</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+</urlset>

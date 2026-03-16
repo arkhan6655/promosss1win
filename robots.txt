@@ -1,0 +1,25 @@
+# =========================================================
+# 1win Guides - SEO Optimized robots.txt
+# =========================================================
+
+# Allow all search engines full access to the site
+User-agent: *
+Allow: /
+
+# ---------------------------------------------------------
+# Crawl Delays for Aggressive Bots 
+# (Google ignores this, but it stops Bing/Yahoo from overloading the server)
+# ---------------------------------------------------------
+User-agent: bingbot
+Crawl-delay: 5
+
+User-agent: Slurp
+Crawl-delay: 5
+
+User-agent: YandexBot
+Crawl-delay: 5
+
+# ---------------------------------------------------------
+# Sitemap Declaration (CRITICAL FOR SEO)
+# ---------------------------------------------------------
+Sitemap: https://grantchester.info/sitemap.xml
