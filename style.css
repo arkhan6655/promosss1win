@@ -1,38 +1,43 @@
 /* ==========================================================================
-   1win Promo Code - High Converting Casino Theme CSS
+   1WIN EXPERT GUIDE - UNIVERSAL STYLESHEET
+   Optimized for Core Web Vitals, E-E-A-T, and High Conversion
    ========================================================================== */
 
-/* --- Google Fonts --- */
+/* --- Google Fonts (Optimized Loading) --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
-/* --- CSS Variables --- */
+/* --- CSS Variables (Theme & Branding) --- */
 :root {
-    --bg-dark: #0a0e17; /* Deep casino blue/black */
-    --bg-alternate: #111827; /* Slightly lighter for contrast */
-    --bg-card: #1f2937;
+    /* Color Palette */
+    --bg-dark: #0a0e17;         /* Deep casino blue/black */
+    --bg-alternate: #111827;    /* Slightly lighter for contrast */
+    --bg-card: #1f2937;         /* Cards and boxes */
     
-    --primary-blue: #0088cc; /* 1win Brand Blue */
-    --neon-blue: #00e5ff; /* Eye-catching action color */
-    --gold: #f59e0b; /* Wealth/Bonus color */
+    --primary-blue: #0088cc;    /* 1win Brand Blue */
+    --neon-blue: #00e5ff;       /* Eye-catching action color */
+    --gold: #f59e0b;            /* Wealth/Bonus color */
     --gold-glow: rgba(245, 158, 11, 0.4);
-    --success-green: #10b981;
+    --success-green: #10b981;   /* Conversion Button Green */
     --success-glow: rgba(16, 185, 129, 0.4);
     
+    /* Typography Colors */
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --text-dark: #111827;
     
+    /* Fonts */
     --font-heading: 'Montserrat', sans-serif;
     --font-body: 'Inter', sans-serif;
     
+    /* UI Elements */
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-pill: 50px;
-    
     --transition: all 0.3s ease-in-out;
+    --max-width: 1200px;
 }
 
-/* --- Base & Reset --- */
+/* --- 1. Base & Reset --- */
 * {
     margin: 0;
     padding: 0;
@@ -41,6 +46,7 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
@@ -50,6 +56,33 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- 2. Universal Typography (For Homepage & All Subpages) --- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.3;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -1px; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); border-left: 4px solid var(--neon-blue); padding-left: 15px; margin-top: 2rem; margin-bottom: 1.5rem; }
+h3 { font-size: 1.5rem; color: var(--gold); margin-top: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p {
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+    font-size: 1.05rem;
 }
 
 a {
@@ -62,54 +95,39 @@ a:hover {
     color: var(--gold);
 }
 
-/* --- Typography --- */
-h1, h2, h3, h4 {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 1rem;
-}
-
-h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    letter-spacing: -1px;
-}
-
-h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    color: #ffffff;
-    border-left: 4px solid var(--neon-blue);
-    padding-left: 15px;
-    margin-bottom: 1.5rem;
-}
-
-h3 {
-    font-size: 1.25rem;
-    color: var(--gold);
-    margin-top: 1.5rem;
-}
-
-p {
-    margin-bottom: 1.25rem;
-    color: #d1d5db;
-    font-size: 1.05rem;
-}
-
 strong {
     color: #ffffff;
     font-weight: 600;
 }
 
-.highlight-text {
-    color: var(--gold);
-    text-shadow: 0 0 10px var(--gold-glow);
+/* Subpage Article Formatting (Automatically styles long text on your guide pages) */
+.seo-text-block ul, 
+.seo-text-block ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
 }
 
-/* --- Layout --- */
+.seo-text-block li {
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+}
+
+.seo-text-block a {
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 229, 255, 0.4);
+    text-underline-offset: 3px;
+}
+
+.seo-text-block a:hover {
+    text-decoration-color: var(--gold);
+}
+
+/* --- 3. Layout & Containers --- */
 .container {
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
 }
 
 .content-section {
@@ -122,7 +140,9 @@ strong {
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* --- Header & Navigation --- */
+.text-center { text-align: center; }
+
+/* --- 4. Header & Navigation --- */
 .site-header {
     background: rgba(10, 14, 23, 0.95);
     backdrop-filter: blur(10px);
@@ -142,10 +162,11 @@ strong {
 
 .logo a {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
 .logo span {
@@ -156,6 +177,8 @@ strong {
     list-style: none;
     display: flex;
     gap: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .main-nav a {
@@ -164,6 +187,7 @@ strong {
     font-size: 0.95rem;
     padding: 8px 12px;
     border-radius: var(--radius-md);
+    text-decoration: none;
 }
 
 .main-nav a:hover {
@@ -171,7 +195,7 @@ strong {
     color: var(--neon-blue);
 }
 
-/* Mobile Menu Toggle Button (Hidden on Desktop) */
+/* Mobile Menu Button */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -194,7 +218,7 @@ strong {
     transform-origin: left center;
 }
 
-/* --- Hero Section (High Conversion Focus) --- */
+/* --- 5. High-Converting Hero Section --- */
 .hero-section {
     position: relative;
     padding: 80px 0 100px;
@@ -203,13 +227,10 @@ strong {
     text-align: center;
 }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==');
-    opacity: 0.5;
-    z-index: 0;
+.hero-section h1 {
+    border-left: none; /* Remove global h2/h1 border for hero */
+    padding-left: 0;
+    margin-top: 0;
 }
 
 .hero-container {
@@ -226,26 +247,27 @@ strong {
 }
 
 .hero-intro {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: var(--text-main);
 }
 
 .hero-subintro {
-    color: var(--text-muted);
-    font-size: 1rem;
+    color: var(--gold);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
-/* Promo Box */
+/* Promo Box (The Money Maker) */
 .promo-box-wrapper {
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
 }
 
 .promo-box {
     background: rgba(31, 41, 55, 0.7);
     border: 2px solid rgba(245, 158, 11, 0.5);
     border-radius: var(--radius-lg);
-    padding: 30px;
+    padding: 35px 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(245, 158, 11, 0.1);
     backdrop-filter: blur(10px);
 }
@@ -262,7 +284,7 @@ strong {
 
 .promo-code-display {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 800;
     color: #ffffff;
     letter-spacing: 5px;
@@ -273,7 +295,7 @@ strong {
     text-shadow: 0px 4px 15px var(--gold-glow);
 }
 
-/* --- Buttons --- */
+/* Buttons */
 .hero-actions {
     display: flex;
     gap: 15px;
@@ -285,7 +307,7 @@ strong {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 28px;
+    padding: 16px 28px;
     font-size: 1.1rem;
     font-weight: 700;
     font-family: var(--font-heading);
@@ -295,12 +317,15 @@ strong {
     transition: var(--transition);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
 .btn-copy {
     background: transparent;
     border: 2px solid var(--gold);
     color: var(--gold);
+    width: 100%;
+    max-width: 250px;
 }
 
 .btn-copy:hover {
@@ -320,6 +345,8 @@ strong {
     color: #ffffff;
     box-shadow: 0 4px 15px var(--success-glow);
     animation: pulse 2s infinite;
+    flex: 1;
+    min-width: 200px;
 }
 
 .btn-register:hover {
@@ -329,11 +356,8 @@ strong {
     color: #fff;
 }
 
-.btn-large {
-    padding: 18px 40px;
-    font-size: 1.2rem;
-    margin-top: 20px;
-}
+.sports-btn { background: linear-gradient(135deg, #0088cc 0%, #005f99 100%); animation: none; }
+.sports-btn:hover { background: linear-gradient(135deg, #005f99 0%, #004477 100%); box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4); }
 
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
@@ -341,241 +365,211 @@ strong {
     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-/* --- Tables (Bonus Structure) --- */
-.table-responsive {
-    overflow-x: auto;
-    margin: 30px 0;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255,255,255,0.1);
+/* --- 6. Trust Badges (E-E-A-T) --- */
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
 }
 
-.bonus-table {
-    width: 100%;
-    border-collapse: collapse;
+.trust-item {
     background: var(--bg-card);
-    text-align: left;
-    min-width: 600px;
-}
-
-.bonus-table th, .bonus-table td {
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.bonus-table th {
-    background: rgba(0, 0, 0, 0.2);
-    color: var(--neon-blue);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-.bonus-table tr:hover td {
-    background: rgba(255,255,255,0.02);
-}
-
-.bonus-table tfoot td {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--gold);
-    font-size: 1.1rem;
-    border-bottom: none;
-}
-
-/* --- Lists --- */
-.step-list {
-    counter-reset: custom-counter;
-    list-style: none;
-    margin: 20px 0 30px 0;
-}
-
-.step-list li {
-    position: relative;
-    padding-left: 50px;
-    margin-bottom: 20px;
-    background: var(--bg-card);
-    padding: 20px;
+    padding: 25px 15px;
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease;
 }
 
-.step-list li::before {
-    counter-increment: custom-counter;
-    content: counter(custom-counter);
-    position: absolute;
-    left: -15px;
-    top: 18px;
-    background: var(--primary-blue);
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+.trust-item:hover { transform: translateY(-5px); }
+.trust-icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+.trust-item h3 { font-size: 1.1rem; margin: 0 0 5px 0; color: #fff; font-family: var(--font-body); }
+.trust-item p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+
+/* --- 7. Silo Architecture Grid (Internal Linking) --- */
+.silo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.silo-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: var(--transition);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-family: var(--font-heading);
-    box-shadow: 0 4px 10px rgba(0, 136, 204, 0.4);
+    flex-direction: column;
+    height: 100%;
 }
 
-.feature-list {
-    list-style: none;
-    margin: 20px 0;
+.silo-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-blue);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    background: #243040;
 }
 
-.feature-list li {
-    position: relative;
-    padding-left: 30px;
+.silo-icon {
+    font-size: 3rem;
     margin-bottom: 15px;
 }
 
-.feature-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--success-green);
-    font-weight: 900;
-    font-size: 1.2rem;
+.silo-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
 }
 
-/* --- FAQ Section --- */
-.faq-section {
-    padding-bottom: 100px;
+.silo-card:hover h3 { color: var(--neon-blue); }
+.silo-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0; flex-grow: 1; }
+.silo-card strong { color: #d1d5db; }
+
+/* --- 8. Universal Tables (For Subpage Data) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
 }
 
-.faq-intro {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 40px;
+th, td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
+
+th {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--neon-blue);
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* --- 9. FAQ Accordion (Schema Optimized) --- */
+.faq-intro { max-width: 700px; margin: 0 auto 40px; color: var(--text-muted); }
 
 .faq-accordion {
     display: flex;
     flex-direction: column;
     gap: 15px;
     max-width: 800px;
-    margin: 0 auto 40px;
+    margin: 0 auto;
 }
 
 .faq-item {
     background: var(--bg-card);
     border: 1px solid rgba(255,255,255,0.05);
-    border-radius: var(--radius-lg);
-    padding: 25px;
-    transition: var(--transition);
-}
-
-.faq-item:hover {
-    border-color: rgba(0, 229, 255, 0.3);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    transform: translateY(-2px);
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
 .faq-question {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 20px 25px;
     font-size: 1.15rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
     color: #fff;
-    margin-bottom: 10px;
-    margin-top: 0;
+    cursor: pointer;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    transition: background 0.3s ease;
 }
 
-.faq-question::before {
-    content: 'Q.';
+.faq-question:hover { background: rgba(255,255,255,0.02); }
+
+.faq-question::after {
+    content: '+';
+    font-size: 1.5rem;
     color: var(--neon-blue);
-    margin-right: 10px;
-    font-size: 1.4rem;
-    font-weight: 800;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question::after {
+    content: '−';
+    transform: rotate(180deg);
 }
 
 .faq-answer {
-    margin-bottom: 0;
-    color: var(--text-muted);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+    background: rgba(0,0,0,0.2);
+    padding: 0 25px;
 }
 
-.final-cta {
-    margin-top: 50px;
+.faq-item.active .faq-answer {
+    max-height: 500px; /* Arbitrary large number to allow animation */
+    padding: 20px 25px;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.cta-text {
-    font-size: 1.5rem;
-    color: #fff;
-}
+.faq-answer p:last-child { margin-bottom: 0; }
 
-/* --- Footer --- */
+/* --- 10. Footer --- */
 .site-footer {
     background: #000000;
-    padding: 50px 0 30px;
+    padding: 60px 0 30px;
     border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-col h4 { color: #fff; margin-bottom: 20px; font-size: 1.2rem; }
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { color: var(--text-muted); font-size: 0.95rem; }
+.footer-col a:hover { color: var(--neon-blue); padding-left: 5px; }
+
+.footer-bottom {
     text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 30px;
 }
 
-.footer-content p {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-}
-
-.disclaimer {
-    font-size: 0.8rem;
-    color: #6b7280;
-    max-width: 800px;
-    margin: 0 auto 20px;
-}
-
-.footer-nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.footer-nav a {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-.footer-nav a:hover {
-    color: var(--neon-blue);
-}
-
-/* Utilities */
-.text-center {
-    text-align: center;
-}
+.footer-bottom p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px; }
+.disclaimer { font-size: 0.8rem !important; color: #6b7280 !important; max-width: 900px; margin: 0 auto; line-height: 1.4; }
 
 /* ==========================================================================
-   Responsive Design (Tablet & Mobile)
+   11. Responsive Design (Tablets & Mobile)
    ========================================================================== */
 
-@media (max-width: 992px) {
-    .hero-actions {
-        flex-direction: column;
-    }
-    
-    .btn {
-        width: 100%;
-    }
+@media (max-width: 1024px) {
+    .hero-actions { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 350px; }
 }
 
 @media (max-width: 768px) {
-    /* Standard Hamburger Header */
-    .menu-toggle {
-        display: flex; /* Show the hamburger icon */
-    }
+    h2 { border-left: none; padding-left: 0; text-align: center; }
+    h2::after { content: ''; display: block; width: 60px; height: 3px; background: var(--neon-blue); margin: 15px auto 0; }
 
-    /* Animate Hamburger to 'X' when active */
-    .menu-toggle.active span:nth-child(1) {
-        transform: rotate(45deg);
-    }
-    .menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-    .menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg);
-    }
+    /* Mobile Header & Nav */
+    .menu-toggle { display: flex; }
+    
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg); }
 
-    /* Dropdown Navigation Menu */
     .main-nav {
         position: absolute;
         top: 70px;
@@ -584,27 +578,16 @@ strong {
         background: rgba(10, 14, 23, 0.98);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        
-        /* Hidden by default using clip-path for smooth dropdown animation */
         clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
         transition: clip-path 0.4s ease-in-out;
         box-shadow: 0 20px 30px rgba(0,0,0,0.5);
     }
 
-    /* Active State (Menu Open) */
-    .main-nav.active {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-
-    .main-nav ul {
-        flex-direction: column;
-        width: 100%;
-        padding: 10px 0;
-        gap: 0;
-    }
-
+    .main-nav.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    
+    .main-nav ul { flex-direction: column; padding: 10px 0; gap: 0; }
+    
     .main-nav a {
         display: block;
         padding: 15px 25px;
@@ -613,54 +596,19 @@ strong {
         border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    .main-nav li:last-child a {
-        border-bottom: none;
-    }
-
-    /* Hero adjustments */
-    .hero-section {
-        padding: 40px 0 60px;
-    }
+    /* Layout Adjustments */
+    .hero-section { padding: 40px 0 60px; }
+    .content-section { padding: 50px 0; }
+    .promo-box { padding: 25px 15px; }
+    .trust-grid { grid-template-columns: repeat(2, 1fr); }
     
-    .promo-code-display {
-        font-size: 2.8rem;
-    }
-    
-    .promo-box {
-        padding: 20px;
-    }
-    
-    /* Content spacing */
-    .content-section {
-        padding: 50px 0;
-    }
-    
-    /* Lists adjustments */
-    .step-list li {
-        margin-left: 15px;
-        padding-left: 20px;
-        padding-top: 35px;
-    }
-    
-    .step-list li::before {
-        top: -15px;
-        left: 20px;
-    }
+    /* Tables for mobile */
+    table { display: block; overflow-x: auto; white-space: nowrap; }
 }
 
 @media (max-width: 480px) {
-    h1 {
-        font-size: 2rem;
-    }
-    h2 {
-        font-size: 1.5rem;
-    }
-    .promo-code-display {
-        font-size: 2.2rem;
-        letter-spacing: 2px;
-    }
-    .btn {
-        font-size: 1rem;
-        padding: 12px 20px;
-    }
+    .trust-grid { grid-template-columns: 1fr; }
+    .silo-grid { grid-template-columns: 1fr; }
+    .promo-code-display { font-size: 2.2rem; letter-spacing: 2px; }
+    .btn { font-size: 1rem; padding: 14px 20px; }
 }
