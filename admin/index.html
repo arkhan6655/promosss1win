@@ -3,310 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1win Partnership Dashboard</title>
+    <title>1win Partner Admin | Weekly Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
         .glass { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .status-badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl">
-        <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-white">1win Admin Access</h1>
-            <p class="text-slate-400 text-sm mt-2">Partnership Tracking System</p>
-        </div>
-        <input type="email" id="email" placeholder="Email" class="w-full p-4 mb-4 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
-        <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
-        <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition">Sign In</button>
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl">
+    <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-white">1win Admin Access</h1>
+        <p class="text-slate-400 text-sm mt-2">Weekly Partnership Tracking (50/50)</p>
     </div>
+    <input type="email" id="email" placeholder="Email" class="w-full p-4 mb-4 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
+    <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
+    <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition">Sign In</button>
+</div>
 
-    <!-- MAIN DASHBOARD -->
-    <div id="dashboard" class="hidden max-w-7xl mx-auto">
-        
-        <!-- Header & Cycle Selector -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 glass p-6 rounded-2xl">
-            <div>
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">Financial Dashboard</h1>
-                <p class="text-slate-400 text-sm mt-1">Net-15 Payment Tracking System</p>
-            </div>
-            <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
-                <div class="w-full md:w-auto">
-                    <label class="text-xs text-slate-400 font-bold uppercase block mb-1">Select Payment Cycle:</label>
-                    <select id="cycle-selector" class="bg-slate-800 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-64 cursor-pointer focus:border-emerald-500">
-                        <option value="">Loading cycles...</option>
-                    </select>
-                </div>
-                <button id="logout-btn" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20 px-6 py-3 rounded-xl text-sm font-bold transition w-full md:w-auto mt-5 md:mt-0">Logout</button>
-            </div>
+<!-- MAIN DASHBOARD -->
+<div id="dashboard" class="hidden max-w-7xl mx-auto">
+
+    <!-- Header & Cycle Selector -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 glass p-6 rounded-2xl">
+        <div>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">Partner Dashboard</h1>
+            <p class="text-slate-400 text-sm mt-1">Weekly Cycles • $100 Min Payout • 7-Day Hold</p>
         </div>
-
-        <!-- TOP SUMMARY BOXES (Cycle Specific) -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <div class="glass p-5 rounded-2xl border-l-4 border-emerald-500 col-span-2 md:col-span-1">
-                <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Total Revenue (100%)</p>
-                <p id="box-total-rev" class="text-2xl font-black text-white mt-1">$0.00</p>
+        <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
+            <div class="w-full md:w-auto">
+                <label class="text-xs text-slate-400 font-bold uppercase block mb-1">Select Earnings Week:</label>
+                <select id="cycle-selector" class="bg-slate-800 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-80 cursor-pointer focus:border-emerald-500">
+                    <!-- Cycles injected here -->
+                </select>
             </div>
-            <div class="glass p-5 rounded-2xl border-l-4 border-blue-500 col-span-2 md:col-span-1">
-                <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider">Partner Share (50%)</p>
-                <p id="box-partner-share" class="text-2xl font-black text-white mt-1">$0.00</p>
-            </div>
-            <div class="glass p-5 rounded-2xl border-l-4 border-purple-500 col-span-2 md:col-span-1">
-                <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider">My Share (50%)</p>
-                <p id="box-my-share" class="text-2xl font-black text-white mt-1">$0.00</p>
-            </div>
-            <div class="glass p-5 rounded-2xl">
-                <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Registrations</p>
-                <p id="box-regs" class="text-2xl font-black text-white mt-1">0</p>
-            </div>
-            <div class="glass p-5 rounded-2xl">
-                <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Deposits</p>
-                <p id="box-deps" class="text-2xl font-black text-white mt-1">0</p>
-            </div>
-        </div>
-
-        <!-- DATA VIEWS -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- LEFT: Date by Date Earning (100% Stats) -->
-            <div class="lg:col-span-1 glass rounded-2xl p-6 h-[600px] flex flex-col">
-                <h2 class="text-lg font-bold text-white mb-4">Daily Statistics (100%)</h2>
-                <div id="daily-list" class="flex-grow overflow-y-auto custom-scrollbar space-y-3 pr-2">
-                    <!-- Daily items injected here -->
-                </div>
-            </div>
-
-            <!-- RIGHT: Complete Transaction Log (100% Stats) -->
-            <div class="lg:col-span-2 glass rounded-2xl p-6 h-[600px] flex flex-col">
-                <h2 class="text-lg font-bold text-white mb-4">Full Transaction Log</h2>
-                <div class="flex-grow overflow-auto custom-scrollbar">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="sticky top-0 bg-slate-900/90 backdrop-blur text-slate-400 text-[10px] uppercase tracking-wider z-10">
-                            <tr>
-                                <th class="p-4 rounded-tl-lg">Date & Time</th>
-                                <th class="p-4">Event Type</th>
-                                <th class="p-4">User ID</th>
-                                <th class="p-4">Country</th>
-                                <th class="p-4 rounded-tr-lg">Amount (100%)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body" class="divide-y divide-slate-800/50 text-slate-300">
-                            <!-- Rows injected here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+            <button id="logout-btn" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20 px-6 py-3 rounded-xl text-sm font-bold transition w-full md:w-auto mt-5 md:mt-0">Logout</button>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="glass p-5 rounded-2xl border-l-4 border-emerald-500">
+            <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Cycle Total (100%)</p>
+            <p id="box-total-rev" class="text-2xl font-black text-white mt-1">$0.00</p>
+            <p id="payout-status-label" class="mt-2 text-[10px]"></p>
+        </div>
+        <div class="glass p-5 rounded-2xl border-l-4 border-blue-500">
+            <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider">Partner Share (50%)</p>
+            <p id="box-partner-share" class="text-2xl font-black text-white mt-1">$0.00</p>
+        </div>
+        <div class="glass p-5 rounded-2xl border-l-4 border-purple-500">
+            <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider">My Share (50%)</p>
+            <p id="box-my-share" class="text-2xl font-black text-white mt-1">$0.00</p>
+        </div>
+        <div class="glass p-5 rounded-2xl border-l-4 border-amber-500">
+            <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider">Expected Payment</p>
+            <p id="box-payment-date" class="text-lg font-bold text-white mt-1">Calculating...</p>
+        </div>
+    </div>
 
-        // --- PASTE YOUR FIREBASE CONFIG HERE ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyAAAkjOkTtB0m9FYLjw9kmdkws4a5jkN2A",
-    authDomain: "win-stats.firebaseapp.com",
-    databaseURL: "https://win-stats-default-rtdb.firebaseio.com",
-    projectId: "win-stats",
-    storageBucket: "win-stats.firebasestorage.app",
-    messagingSenderId: "590275471925",
-    appId: "1:590275471925:web:a7035ab6e493a1b8c89f7c"
-        };
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Daily Stats -->
+        <div class="lg:col-span-1 glass rounded-2xl p-6 h-[600px] flex flex-col">
+            <h2 class="text-lg font-bold text-white mb-4">Daily Breakdown</h2>
+            <div id="daily-list" class="flex-grow overflow-y-auto custom-scrollbar space-y-3 pr-2"></div>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+        <!-- Log -->
+        <div class="lg:col-span-2 glass rounded-2xl p-6 h-[600px] flex flex-col">
+            <h2 class="text-lg font-bold text-white mb-4">Transaction Log (Cycle Data)</h2>
+            <div class="flex-grow overflow-auto custom-scrollbar">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="sticky top-0 bg-slate-900/90 backdrop-blur text-slate-400 text-[10px] uppercase tracking-wider z-10">
+                        <tr>
+                            <th class="p-4">Date & Time</th>
+                            <th class="p-4">Event</th>
+                            <th class="p-4">User ID</th>
+                            <th class="p-4">Amount (100%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-slate-800/50 text-slate-300"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-        const loginScreen = document.getElementById('login-screen');
-        const dashboard = document.getElementById('dashboard');
-        const cycleSelector = document.getElementById('cycle-selector');
-        
-        let allGlobalData = []; // Store all data so we don't refetch on cycle change
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Auth Logic
-        document.getElementById('login-btn').onclick = () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Login Error: " + err.message));
-        };
-        document.getElementById('logout-btn').onclick = () => signOut(auth);
+    const firebaseConfig = {
+        apiKey: "AIzaSyAAAkjOkTtB0m9FYLjw9kmdkws4a5jkN2A",
+        authDomain: "win-stats.firebaseapp.com",
+        databaseURL: "https://win-stats-default-rtdb.firebaseio.com",
+        projectId: "win-stats",
+        storageBucket: "win-stats.firebasestorage.app",
+        messagingSenderId: "590275471925",
+        appId: "1:590275471925:web:a7035ab6e493a1b8c89f7c"
+    };
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                loginScreen.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                fetchDatabase();
-            } else {
-                loginScreen.classList.remove('hidden');
-                dashboard.classList.add('hidden');
-            }
-        });
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-        // Helper: Generates a cycle key and label based on a timestamp
-        // Format Key: "YYYY-MM-1" or "YYYY-MM-2" (for sorting)
-        function getCycleDetails(timestamp) {
-            const date = new Date(timestamp);
-            const year = date.getFullYear();
-            const monthIndex = date.getMonth(); // 0-11
-            const day = date.getDate();
-            
-            const isFirstHalf = day <= 15;
-            const periodKey = isFirstHalf ? 1 : 2;
-            
-            // Format month with leading zero for correct sorting (e.g., 2024-08-1)
-            const sortKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${periodKey}`;
-            
-            // Generate readable label (e.g., "August 1 - 15, 2024")
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const lastDayOfMonth = new Date(year, monthIndex + 1, 0).getDate();
-            const label = isFirstHalf 
-                ? `${monthNames[monthIndex]} 1 - 15, ${year}` 
-                : `${monthNames[monthIndex]} 16 - ${lastDayOfMonth}, ${year}`;
-                
-            return { sortKey, label };
+    const MIN_PAYOUT = 100.00;
+    let processedCycles = []; 
+
+    // --- UI Logic ---
+    const loginScreen = document.getElementById('login-screen');
+    const dashboard = document.getElementById('dashboard');
+    const cycleSelector = document.getElementById('cycle-selector');
+
+    document.getElementById('login-btn').onclick = () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+    };
+    document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            loginScreen.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+            fetchDatabase();
+        } else {
+            loginScreen.classList.remove('hidden');
+            dashboard.classList.add('hidden');
         }
+    });
 
-        // Fetch Data from Firebase
-        function fetchDatabase() {
-            const statsRef = ref(db, 'stats');
-            onValue(statsRef, (snapshot) => {
-                const rawData = snapshot.val();
-                if (!rawData) {
-                    cycleSelector.innerHTML = '<option>No data available</option>';
-                    return;
+    // --- Core Logic ---
+
+    // Get the Monday of the week for any date
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1); 
+        const mon = new Date(d.setDate(diff));
+        mon.setHours(0,0,0,0);
+        return mon;
+    }
+
+    function formatDate(d) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function fetchDatabase() {
+        const statsRef = ref(db, 'stats');
+        onValue(statsRef, (snapshot) => {
+            const rawData = snapshot.val();
+            if (!rawData) return;
+
+            const items = Object.values(rawData).map(item => ({
+                ...item,
+                _ts: item.timestamp || new Date(item.server_time).getTime()
+            })).sort((a, b) => a._ts - b._ts); // Sort oldest to newest for carryover calculation
+
+            // 1. Group by Week
+            const weeksMap = {};
+            items.forEach(item => {
+                const mon = getMonday(item._ts);
+                const key = mon.getTime();
+                if (!weeksMap[key]) {
+                    const sun = new Date(mon);
+                    sun.setDate(sun.getDate() + 6);
+                    sun.setHours(23,59,59,999);
+                    weeksMap[key] = {
+                        monday: mon,
+                        sunday: sun,
+                        earnings: 0,
+                        data: []
+                    };
                 }
-
-                allGlobalData = Object.values(rawData);
-                
-                // 1. Group unique cycles
-                const cyclesMap = {};
-                allGlobalData.forEach(item => {
-                    const ts = item.timestamp || new Date(item.server_time).getTime();
-                    if(ts) {
-                        const cycle = getCycleDetails(ts);
-                        cyclesMap[cycle.sortKey] = cycle.label;
-                        item._cycleKey = cycle.sortKey; // Assign key to item for easy filtering
-                        item._parsedDate = new Date(ts);
-                    }
-                });
-
-                // 2. Sort cycles newest to oldest
-                const sortedCycleKeys = Object.keys(cyclesMap).sort().reverse();
-                
-                // 3. Populate Dropdown
-                const currentSelection = cycleSelector.value; // Remember selection if updating live
-                cycleSelector.innerHTML = "";
-                sortedCycleKeys.forEach(key => {
-                    const option = document.createElement('option');
-                    option.value = key;
-                    option.textContent = cyclesMap[key];
-                    cycleSelector.appendChild(option);
-                });
-
-                // 4. Render selected or newest cycle
-                if (sortedCycleKeys.length > 0) {
-                    const cycleToRender = currentSelection && cyclesMap[currentSelection] ? currentSelection : sortedCycleKeys[0];
-                    cycleSelector.value = cycleToRender;
-                    renderDashboard(cycleToRender);
-                }
-            });
-        }
-
-        // Render Dashboard based on selected cycle
-        function renderDashboard(selectedCycleKey) {
-            let totalRevenue = 0;
-            let totalRegs = 0;
-            let totalDeps = 0;
-            const dailyMap = {};
-            
-            const tbody = document.getElementById('table-body');
-            tbody.innerHTML = "";
-            const dailyList = document.getElementById('daily-list');
-            dailyList.innerHTML = "";
-
-            // Filter data for the chosen cycle
-            const cycleData = allGlobalData.filter(item => item._cycleKey === selectedCycleKey);
-            
-            // Sort newest first
-            cycleData.sort((a,b) => b._parsedDate - a._parsedDate);
-
-            cycleData.forEach(item => {
-                const amount = parseFloat(item.amount || 0);
-                const isReg = item.event_type === 'Registration';
-                const isDep = item.event_type.includes('Deposit');
-
-                // Aggregate Totals
-                totalRevenue += amount;
-                if (isReg) totalRegs++;
-                if (isDep) totalDeps++;
-
-                // Aggregate Daily Map
-                const dateString = item._parsedDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-                if (!dailyMap[dateString]) {
-                    dailyMap[dateString] = { rev: 0, regs: 0, deps: 0 };
-                }
-                dailyMap[dateString].rev += amount;
-                if (isReg) dailyMap[dateString].regs++;
-                if (isDep) dailyMap[dateString].deps++;
-
-                // Render Table Row (100% stats)
-                const row = `
-                    <tr class="hover:bg-slate-800/30 transition">
-                        <td class="p-4 text-slate-400 font-mono text-xs">${item._parsedDate.toLocaleString()}</td>
-                        <td class="p-4"><span class="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold">${item.event_type}</span></td>
-                        <td class="p-4 text-emerald-400 font-mono text-xs">${item.user_id || '--'}</td>
-                        <td class="p-4 text-slate-400 text-xs">${item.country || '--'}</td>
-                        <td class="p-4 font-bold ${amount > 0 ? 'text-emerald-400' : 'text-slate-500'}">$${amount.toFixed(2)}</td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
+                weeksMap[key].earnings += parseFloat(item.amount || 0);
+                weeksMap[key].data.push(item);
             });
 
-            // Update Top Summary Boxes (Where the 50% split happens)
-            document.getElementById('box-total-rev').innerText = "$" + totalRevenue.toFixed(2);
-            document.getElementById('box-partner-share').innerText = "$" + (totalRevenue / 2).toFixed(2);
-            document.getElementById('box-my-share').innerText = "$" + (totalRevenue / 2).toFixed(2);
-            document.getElementById('box-regs').innerText = totalRegs;
-            document.getElementById('box-deps').innerText = totalDeps;
+            // 2. Calculate Cycles with Carryover logic
+            processedCycles = [];
+            let rollingCarryover = 0;
+            const sortedWeekKeys = Object.keys(weeksMap).sort();
 
-            // Render Daily List (100% stats only)
-            const sortedDays = Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a));
-            if (sortedDays.length === 0) {
-                dailyList.innerHTML = '<p class="text-slate-500 text-sm p-4">No activity in this cycle.</p>';
-            } else {
-                sortedDays.forEach(date => {
-                    const stats = dailyMap[date];
-                    const dayHtml = `
-                        <div class="p-4 bg-slate-800/30 border border-slate-700/50 rounded-xl flex justify-between items-center">
-                            <div>
-                                <p class="text-sm font-bold text-slate-200">${date}</p>
-                                <div class="flex gap-3 mt-1 text-[10px] text-slate-400 font-mono">
-                                    <span>Regs: <b class="text-purple-400">${stats.regs}</b></span>
-                                    <span>Deps: <b class="text-blue-400">${stats.deps}</b></span>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-lg font-black ${stats.rev > 0 ? 'text-emerald-400' : 'text-slate-500'}">$${stats.rev.toFixed(2)}</p>
-                            </div>
-                        </div>
-                    `;
-                    dailyList.innerHTML += dayHtml;
+            sortedWeekKeys.forEach(key => {
+                const week = weeksMap[key];
+                const totalBalance = week.earnings + rollingCarryover;
+                
+                // Verification ends 7 days after the Sunday of that week
+                const verificationEndDate = new Date(week.sunday);
+                verificationEndDate.setDate(verificationEndDate.getDate() + 7);
+                
+                // Payout is the Tuesday after verification ends
+                const payoutDate = new Date(verificationEndDate);
+                payoutDate.setDate(payoutDate.getDate() + ( (7 - payoutDate.getDay() + 2) % 7 || 7));
+
+                let status = "";
+                let finalPayable = 0;
+
+                if (totalBalance >= MIN_PAYOUT) {
+                    status = (new Date() > verificationEndDate) ? "READY" : "IN_HOLD";
+                    finalPayable = totalBalance;
+                    rollingCarryover = 0; // Reset carryover as it's paid
+                } else {
+                    status = "CARRYOVER";
+                    finalPayable = totalBalance;
+                    rollingCarryover = totalBalance; // Move to next week
+                }
+
+                processedCycles.push({
+                    id: key,
+                    label: `${formatDate(week.monday)} - ${formatDate(week.sunday)}`,
+                    weekEarnings: week.earnings,
+                    totalBalance: totalBalance,
+                    status: status,
+                    payoutDate: payoutDate,
+                    data: week.data,
+                    verificationEndDate: verificationEndDate
                 });
+            });
+
+            // 3. Update Dropdown (Newest First)
+            const currentSelection = cycleSelector.value;
+            cycleSelector.innerHTML = "";
+            processedCycles.slice().reverse().forEach(cycle => {
+                const opt = document.createElement('option');
+                opt.value = cycle.id;
+                opt.textContent = `${cycle.label} (${cycle.status === 'CARRYOVER' ? 'Below $100' : '$'+cycle.totalBalance.toFixed(2)})`;
+                cycleSelector.appendChild(opt);
+            });
+
+            if (processedCycles.length > 0) {
+                const toRender = currentSelection || processedCycles[processedCycles.length - 1].id;
+                cycleSelector.value = toRender;
+                renderDashboard(toRender);
             }
+        });
+    }
+
+    function renderDashboard(cycleId) {
+        const cycle = processedCycles.find(c => c.id == cycleId);
+        if (!cycle) return;
+
+        // Stats
+        document.getElementById('box-total-rev').innerText = `$${cycle.totalBalance.toFixed(2)}`;
+        document.getElementById('box-partner-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
+        document.getElementById('box-my-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
+
+        // Status Label & Date
+        const statusEl = document.getElementById('payout-status-label');
+        const payDateEl = document.getElementById('box-payment-date');
+
+        if (cycle.status === "CARRYOVER") {
+            statusEl.innerHTML = `<span class="bg-amber-500/20 text-amber-500 status-badge">Rolls Over</span>`;
+            payDateEl.innerText = "Below $100";
+            payDateEl.className = "text-lg font-bold text-amber-500 mt-1";
+        } else if (cycle.status === "IN_HOLD") {
+            statusEl.innerHTML = `<span class="bg-blue-500/20 text-blue-500 status-badge">Verification Hold</span>`;
+            payDateEl.innerText = formatDate(cycle.payoutDate);
+            payDateEl.className = "text-lg font-bold text-blue-400 mt-1";
+        } else {
+            statusEl.innerHTML = `<span class="bg-emerald-500/20 text-emerald-500 status-badge">Available / Paid</span>`;
+            payDateEl.innerText = formatDate(cycle.payoutDate);
+            payDateEl.className = "text-lg font-bold text-emerald-400 mt-1";
         }
 
-        // Listen for Dropdown Change
-        cycleSelector.addEventListener('change', (e) => {
-            renderDashboard(e.target.value);
+        // Table Rows
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = "";
+        cycle.data.slice().reverse().forEach(item => {
+            const row = `
+                <tr class="hover:bg-slate-800/30 transition">
+                    <td class="p-4 text-slate-400 font-mono text-xs">${new Date(item._ts).toLocaleString()}</td>
+                    <td class="p-4"><span class="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold">${item.event_type}</span></td>
+                    <td class="p-4 text-emerald-400 font-mono text-xs">${item.user_id || '--'}</td>
+                    <td class="p-4 font-bold ${item.amount > 0 ? 'text-emerald-400' : 'text-slate-500'}">$${parseFloat(item.amount||0).toFixed(2)}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
         });
 
-    </script>
+        // Daily List
+        const dailyMap = {};
+        cycle.data.forEach(item => {
+            const d = formatDate(new Date(item._ts));
+            if(!dailyMap[d]) dailyMap[d] = 0;
+            dailyMap[d] += parseFloat(item.amount || 0);
+        });
+
+        const dailyList = document.getElementById('daily-list');
+        dailyList.innerHTML = "";
+        Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a)).forEach(date => {
+            dailyList.innerHTML += `
+                <div class="p-4 bg-slate-800/30 border border-slate-700/50 rounded-xl flex justify-between items-center">
+                    <p class="text-sm font-bold text-slate-200">${date}</p>
+                    <p class="text-lg font-black text-emerald-400">$${dailyMap[date].toFixed(2)}</p>
+                </div>
+            `;
+        });
+    }
+
+    cycleSelector.onchange = (e) => renderDashboard(e.target.value);
+
+</script>
 </body>
 </html>
