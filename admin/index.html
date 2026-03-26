@@ -3,71 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1win Advanced Analytics</title>
+    <title>1win Partnership Executive Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        .stat-card { border-left: 4px solid #10b981; }
+        .partner-card { border-left: 4px solid #3b82f6; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
 
-    <div id="login-screen" class="max-w-md mx-auto mt-20 p-8 glass rounded-2xl">
-        <h1 class="text-2xl font-bold mb-6 text-center text-green-400">Admin Authentication</h1>
-        <input type="email" id="email" placeholder="Email" class="w-full p-3 mb-4 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:border-green-500">
-        <input type="password" id="password" placeholder="Password" class="w-full p-3 mb-6 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:border-green-500">
-        <button id="login-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition">Enter Dashboard</button>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="max-w-md mx-auto mt-32 p-8 glass rounded-3xl shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white">Partner Portal</h1>
+            <p class="text-slate-400 text-sm mt-2">1win Affiliate Management System</p>
+        </div>
+        <input type="email" id="email" placeholder="Admin Email" class="w-full p-4 mb-4 rounded-xl bg-slate-900 border border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none transition">
+        <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-900 border border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none transition">
+        <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">Sign In</button>
     </div>
 
-    <div id="dashboard" class="hidden">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-green-400 tracking-tight">1win Analytics <span class="text-sm font-normal text-slate-400">Live Feed</span></h1>
-            <button id="logout-btn" class="bg-red-500/20 text-red-400 border border-red-500/50 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">Logout</button>
-        </div>
-
-        <!-- Analytics Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div class="glass p-6 rounded-xl">
-                <p class="text-slate-400 text-sm">Total Registrations</p>
-                <p id="stat-reg" class="text-2xl font-bold text-blue-400">0</p>
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard" class="hidden max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-4xl font-extrabold text-white tracking-tight">Financial Overview</h1>
+                <p id="current-period-label" class="text-emerald-400 font-medium mt-1">Detecting current period...</p>
             </div>
-            <div class="glass p-6 rounded-xl">
-                <p class="text-slate-400 text-sm">Total Deposits</p>
-                <p id="stat-dep" class="text-2xl font-bold text-green-400">0</p>
-            </div>
-            <div class="glass p-6 rounded-xl">
-                <p class="text-slate-400 text-sm">Total Revenue</p>
-                <p id="stat-rev" class="text-2xl font-bold text-yellow-400">$0.00</p>
-            </div>
-            <div class="glass p-6 rounded-xl">
-                <p class="text-slate-400 text-sm">First Deposits</p>
-                <p id="stat-first" class="text-2xl font-bold text-purple-400">0</p>
+            <div class="flex gap-3">
+                <button id="logout-btn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-6 py-2.5 rounded-xl text-sm font-semibold transition">Logout</button>
             </div>
         </div>
 
-        <!-- Data Table -->
-        <div class="glass rounded-xl overflow-hidden">
-            <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-800/50 text-slate-300 text-xs uppercase">
-                        <tr>
-                            <th class="p-4">Time</th>
-                            <th class="p-4">Event</th>
-                            <th class="p-4">User ID</th>
-                            <th class="p-4">Amount</th>
-                            <th class="p-4">Country</th>
-                            <th class="p-4">Source</th>
-                            <th class="p-4">Sub1</th>
-                            <th class="p-4">Transaction ID</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data-table" class="text-sm divide-y divide-slate-700/50">
-                        <!-- Rows injected here -->
-                    </tbody>
-                </table>
+        <!-- TOP KPI CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="glass p-6 rounded-2xl stat-card shadow-xl">
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total Revenue (Period)</p>
+                <p id="period-total" class="text-3xl font-black text-white mt-2">$0.00</p>
             </div>
+            <div class="glass p-6 rounded-2xl partner-card shadow-xl">
+                <p class="text-blue-400 text-xs font-bold uppercase tracking-wider">Partner's 50% Share</p>
+                <p id="partner-share" class="text-3xl font-black text-white mt-2">$0.00</p>
+                <p class="text-[10px] text-slate-500 mt-1">Calculated for current 15-day cycle</p>
+            </div>
+            <div class="glass p-6 rounded-2xl shadow-xl">
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Your 50% Share</p>
+                <p id="your-share" class="text-3xl font-black text-white mt-2">$0.00</p>
+            </div>
+            <div class="glass p-6 rounded-2xl shadow-xl border-l-4 border-purple-500">
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Active Registrations</p>
+                <p id="period-regs" class="text-3xl font-black text-white mt-2">0</p>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT TABS -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- LEFT: Daily Earnings Breakdown -->
+            <div class="lg:col-span-1 glass rounded-3xl p-6 shadow-xl h-[600px] flex flex-col">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-emerald-500 rounded-full"></span>
+                    Daily Breakdown
+                </h2>
+                <div id="daily-list" class="flex-grow overflow-y-auto custom-scrollbar space-y-3">
+                    <!-- Daily items injected here -->
+                </div>
+            </div>
+
+            <!-- RIGHT: Period History & Logs -->
+            <div class="lg:col-span-2 glass rounded-3xl p-6 shadow-xl h-[600px] flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold">Transaction History</h2>
+                    <select id="history-filter" class="bg-slate-800 text-xs p-2 rounded-lg border border-slate-700 outline-none">
+                        <option value="current">Current Cycle Only</option>
+                        <option value="all">Full History</option>
+                    </select>
+                </div>
+                <div class="flex-grow overflow-auto custom-scrollbar">
+                    <table class="w-full text-left text-sm">
+                        <thead class="sticky top-0 bg-slate-900 text-slate-500 uppercase text-[10px] font-bold">
+                            <tr>
+                                <th class="p-4">Date</th>
+                                <th class="p-4">Event</th>
+                                <th class="p-4">User</th>
+                                <th class="p-4">Revenue</th>
+                                <th class="p-4">Partner (50%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="main-table-body" class="divide-y divide-slate-800">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -76,7 +111,6 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIG: Replace with your details
         const firebaseConfig = {
             apiKey: "AIzaSyAAAkjOkTtB0m9FYLjw9kmdkws4a5jkN2A",
     authDomain: "win-stats.firebaseapp.com",
@@ -91,9 +125,20 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // UI Elements
         const loginScreen = document.getElementById('login-screen');
         const dashboard = document.getElementById('dashboard');
+
+        // Logic for Period Detection
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentDay = now.getDate();
+        
+        // Net-15 Logic: 1-15 or 16-End
+        const isFirstHalf = currentDay <= 15;
+        const periodStart = isFirstHalf ? 1 : 16;
+        const periodLabel = `${currentMonth+1}/${isFirstHalf ? '01' : '16'}/${currentYear} - ${currentMonth+1}/${isFirstHalf ? '15' : 'End'}/${currentYear}`;
+        document.getElementById('current-period-label').innerText = "Current Active Period: " + periodLabel;
 
         document.getElementById('login-btn').onclick = () => {
             const email = document.getElementById('email').value;
@@ -107,62 +152,96 @@
             if (user) {
                 loginScreen.classList.add('hidden');
                 dashboard.classList.remove('hidden');
-                loadAnalytics();
+                loadData();
             } else {
                 loginScreen.classList.remove('hidden');
                 dashboard.classList.add('hidden');
             }
         });
 
-        function loadAnalytics() {
+        function loadData() {
             const statsRef = ref(db, 'stats');
             onValue(statsRef, (snapshot) => {
-                const data = snapshot.val();
-                const tbody = document.getElementById('data-table');
+                const rawData = snapshot.val();
+                if (!rawData) return;
+
+                const items = Object.values(rawData);
+                const filterMode = document.getElementById('history-filter').value;
+
+                let periodTotal = 0;
+                let periodRegs = 0;
+                let dailyMap = {};
+                
+                const tbody = document.getElementById('main-table-body');
                 tbody.innerHTML = "";
+                const dailyList = document.getElementById('daily-list');
+                dailyList.innerHTML = "";
 
-                let regCount = 0, depCount = 0, totalRev = 0, firstDep = 0;
+                // Process Transactions
+                items.sort((a,b) => b.timestamp - a.timestamp).forEach(item => {
+                    const txDate = new Date(item.timestamp || item.server_time);
+                    const txDay = txDate.getDate();
+                    const txMonth = txDate.getMonth();
+                    const txYear = txDate.getFullYear();
 
-                if (data) {
-                    const items = Object.values(data).reverse();
-                    items.forEach(item => {
-                        // Calculate Statistics
-                        if(item.event_type === 'Registration') regCount++;
-                        if(item.event_type.includes('Deposit')) depCount++;
-                        if(item.event_type === 'First_Deposit') firstDep++;
-                        totalRev += parseFloat(item.amount || 0);
+                    const itemInCurrentPeriod = (txMonth === currentMonth && txYear === currentYear && 
+                                               ((isFirstHalf && txDay <= 15) || (!isFirstHalf && txDay >= 16)));
 
-                        // Create Row
+                    const amount = parseFloat(item.amount || 0);
+
+                    if (itemInCurrentPeriod) {
+                        periodTotal += amount;
+                        if(item.event_type === 'Registration') periodRegs++;
+                    }
+
+                    // Daily Aggregation
+                    const dateKey = txDate.toLocaleDateString();
+                    if(!dailyMap[dateKey]) dailyMap[dateKey] = 0;
+                    dailyMap[dateKey] += amount;
+
+                    // Table Logic (Filtering)
+                    if (filterMode === 'all' || itemInCurrentPeriod) {
                         const row = `
-                            <tr class="hover:bg-slate-700/30 transition">
-                                <td class="p-4 text-slate-400 whitespace-nowrap">${item.server_time}</td>
-                                <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${getBadgeClass(item.event_type)}">${item.event_type}</span></td>
-                                <td class="p-4 font-mono text-green-400">${item.user_id}</td>
-                                <td class="p-4 font-bold text-white">$${item.amount}</td>
-                                <td class="p-4">${item.country}</td>
-                                <td class="p-4 text-slate-400 text-xs">${item.source_name || 'Direct'}</td>
-                                <td class="p-4 text-slate-400">${item.sub1}</td>
-                                <td class="p-4 text-xs font-mono text-slate-500">${item.transaction_id || 'N/A'}</td>
+                            <tr class="hover:bg-slate-800/40 transition">
+                                <td class="p-4 text-slate-400 font-mono text-xs">${txDate.toLocaleString()}</td>
+                                <td class="p-4"><span class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700 font-bold">${item.event_type}</span></td>
+                                <td class="p-4 text-emerald-400 font-medium">${item.user_id || 'ID Hidden'}</td>
+                                <td class="p-4 font-bold text-white">$${amount.toFixed(2)}</td>
+                                <td class="p-4 text-blue-400 font-bold">$${(amount/2).toFixed(2)}</td>
                             </tr>
                         `;
                         tbody.innerHTML += row;
-                    });
+                    }
+                });
 
-                    // Update UI Stats
-                    document.getElementById('stat-reg').innerText = regCount;
-                    document.getElementById('stat-dep').innerText = depCount;
-                    document.getElementById('stat-first').innerText = firstDep;
-                    document.getElementById('stat-rev').innerText = "$" + totalRev.toFixed(2);
-                }
+                // Update UI Stats
+                document.getElementById('period-total').innerText = "$" + periodTotal.toFixed(2);
+                document.getElementById('partner-share').innerText = "$" + (periodTotal / 2).toFixed(2);
+                document.getElementById('your-share').innerText = "$" + (periodTotal / 2).toFixed(2);
+                document.getElementById('period-regs').innerText = periodRegs;
+
+                // Render Daily Breakdown
+                Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a)).forEach(date => {
+                    const dayTotal = dailyMap[date];
+                    const dayItem = `
+                        <div class="flex justify-between items-center p-4 bg-slate-900/50 rounded-2xl border border-slate-800">
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold">${date}</p>
+                                <p class="text-lg font-bold text-white">$${dayTotal.toFixed(2)}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-blue-500 font-bold">PARTNER CUT</p>
+                                <p class="text-sm font-bold text-blue-400">$${(dayTotal/2).toFixed(2)}</p>
+                            </div>
+                        </div>
+                    `;
+                    dailyList.innerHTML += dayItem;
+                });
             });
         }
 
-        function getBadgeClass(type) {
-            if(type === 'Registration') return 'bg-blue-500/20 text-blue-400';
-            if(type.includes('Deposit')) return 'bg-green-500/20 text-green-400';
-            if(type === 'Revenue') return 'bg-yellow-500/20 text-yellow-400';
-            return 'bg-slate-500/20 text-slate-400';
-        }
+        document.getElementById('history-filter').onchange = loadData;
+
     </script>
 </body>
 </html>
