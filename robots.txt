@@ -6,6 +6,9 @@
 User-agent: *
 Allow: /
 
+# Block admin panel (IMPORTANT)
+Disallow: /partnars1win/admin/
+
 # ---------------------------------------------------------
 # Crawl Delays for Aggressive Bots 
 # (Google ignores this, but it stops Bing/Yahoo from overloading the server)
