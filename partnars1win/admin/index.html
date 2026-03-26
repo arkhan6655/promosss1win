@@ -3,88 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1win Partner Admin | Weekly Tracking</title>
+    <title>1win Partner Admin | Professional Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); }
+        .glass-panel { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.05); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .status-badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tab-active { border-bottom: 2px solid #10b981; color: #10b981; }
+        .tab-inactive { color: #64748b; border-bottom: 2px solid transparent; }
+        .tab-inactive:hover { color: #94a3b8; border-color: #475569; }
+        /* Loader */
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: #10b981; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 custom-scrollbar">
 
-<!-- LOGIN -->
-<div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl">
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl transition-all duration-300">
     <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-white">1win Admin Access</h1>
-        <p class="text-slate-400 text-sm mt-2">Partner Tracking System (50/50)</p>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight">1win Partner</h1>
+        <p class="text-slate-400 text-sm mt-2">Secure Tracking System (50/50)</p>
     </div>
-    <input type="email" id="email" placeholder="Email" class="w-full p-4 mb-4 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
-    <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-800 border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
-    <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition">Sign In</button>
+    <div id="login-error" class="hidden bg-red-500/10 border border-red-500/50 text-red-400 text-xs p-3 rounded-lg mb-4 text-center"></div>
+    <input type="email" id="email" placeholder="Email Address" class="w-full p-4 mb-4 rounded-xl bg-slate-800/50 border border-slate-700 focus:outline-none focus:border-emerald-500 transition text-white">
+    <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-800/50 border border-slate-700 focus:outline-none focus:border-emerald-500 transition text-white">
+    <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition flex justify-center items-center h-14">
+        <span id="login-btn-text">Sign In securely</span>
+        <div id="login-loader" class="loader hidden"></div>
+    </button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="hidden max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 glass p-6 rounded-2xl">
+<!-- MAIN DASHBOARD -->
+<div id="dashboard" class="hidden max-w-[1400px] mx-auto flex flex-col gap-6">
+    
+    <!-- HEADER -->
+    <div class="glass p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-extrabold text-white tracking-tight">Partner Dashboard</h1>
-            <p class="text-slate-400 text-sm mt-1">Weekly Cycles • $100 Min Payout • 7-Day Hold</p>
+            <h1 class="text-2xl font-black text-white tracking-tight">Financial Dashboard</h1>
+            <p class="text-slate-400 text-sm mt-1">Real-time sync • Strict UTC Billing • $100 Min Threshold</p>
         </div>
-        <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
-            <div class="w-full md:w-auto">
-                <label class="text-xs text-slate-400 font-bold uppercase block mb-1">Select Earnings Week:</label>
-                <select id="cycle-selector" class="bg-slate-800 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-80 cursor-pointer focus:border-emerald-500"></select>
+        <div class="flex items-center gap-4 w-full md:w-auto">
+            <div id="db-status" class="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div> Live
             </div>
-            <button id="logout-btn" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20 px-6 py-3 rounded-xl text-sm font-bold transition w-full md:w-auto mt-5 md:mt-0">Logout</button>
+            <button id="logout-btn" class="text-slate-400 hover:text-white text-sm font-bold transition">Sign Out</button>
         </div>
     </div>
 
-    <!-- SUMMARY CARDS -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="glass p-5 rounded-2xl border-l-4 border-emerald-500">
-            <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Cycle Total (100%)</p>
-            <p id="box-total-rev" class="text-2xl font-black text-white mt-1">$0.00</p>
-            <p id="payout-status-label" class="mt-2"></p>
-        </div>
-        <div class="glass p-5 rounded-2xl border-l-4 border-blue-500">
-            <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider">Partner Share (50%)</p>
-            <p id="box-partner-share" class="text-2xl font-black text-white mt-1">$0.00</p>
-        </div>
-        <div class="glass p-5 rounded-2xl border-l-4 border-purple-500">
-            <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider">My Share (50%)</p>
-            <p id="box-my-share" class="text-2xl font-black text-white mt-1">$0.00</p>
-        </div>
-        <div class="glass p-5 rounded-2xl border-l-4 border-amber-500">
-            <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider">Expected Payment</p>
-            <p id="box-payment-date" class="text-lg font-bold text-white mt-1">Calculating...</p>
-        </div>
+    <!-- TABS NAVIGATION -->
+    <div class="flex gap-6 border-b border-slate-800 mb-2 px-2">
+        <button id="tab-payouts" class="pb-3 text-sm font-bold tracking-wide transition-all tab-active">WEEKLY PAYOUTS</button>
+        <button id="tab-analytics" class="pb-3 text-sm font-bold tracking-wide transition-all tab-inactive">CUSTOM ANALYTICS</button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-1 glass rounded-2xl p-6 h-[600px] flex flex-col">
-            <h2 class="text-lg font-bold text-white mb-4">Daily Breakdown</h2>
-            <div id="daily-list" class="flex-grow overflow-y-auto custom-scrollbar space-y-3 pr-2"></div>
+    <!-- TAB 1: WEEKLY PAYOUTS VIEW -->
+    <div id="view-payouts" class="flex flex-col gap-6">
+        
+        <!-- Controls & Ledger -->
+        <div class="glass p-6 rounded-2xl flex flex-col xl:flex-row gap-6">
+            <!-- Selector -->
+            <div class="xl:w-1/3 flex flex-col justify-center border-r border-slate-800/50 pr-6">
+                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">Select Billing Cycle (UTC)</label>
+                <select id="cycle-selector" class="bg-slate-900 text-white text-sm p-4 rounded-xl border border-slate-700 outline-none w-full cursor-pointer focus:border-emerald-500 transition shadow-inner appearance-none"></select>
+                
+                <div id="payout-banner" class="mt-6 p-4 rounded-xl border flex flex-col gap-1">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Ledger Math -->
+            <div class="xl:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-4 rounded-xl flex flex-col justify-center">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Carried Over</p>
+                    <p id="box-carryover" class="text-xl font-black text-slate-300 mt-1">$0.00</p>
+                </div>
+                <div class="glass-panel p-4 rounded-xl flex flex-col justify-center relative">
+                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 text-slate-600 font-black">+</div>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">New Earnings</p>
+                    <p id="box-new-earnings" class="text-xl font-black text-emerald-400 mt-1">$0.00</p>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-emerald-500/30 flex flex-col justify-center relative bg-emerald-900/10">
+                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 text-slate-600 font-black">=</div>
+                    <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-wider">Total Balance (100%)</p>
+                    <p id="box-total" class="text-2xl font-black text-white mt-1">$0.00</p>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-blue-500/30 flex flex-col justify-center bg-blue-900/10">
+                    <p class="text-blue-400 text-[10px] font-bold uppercase tracking-wider">Your Share (50%)</p>
+                    <p id="box-share" class="text-2xl font-black text-white mt-1">$0.00</p>
+                </div>
+            </div>
         </div>
-        <div class="lg:col-span-2 glass rounded-2xl p-6 h-[600px] flex flex-col">
-            <h2 class="text-lg font-bold text-white mb-4">Transaction Log</h2>
-            <div class="flex-grow overflow-auto custom-scrollbar">
-                <table class="w-full text-left text-sm whitespace-nowrap">
-                    <thead class="sticky top-0 bg-slate-900/90 backdrop-blur text-slate-400 text-[10px] uppercase tracking-wider z-10">
-                        <tr>
-                            <th class="p-4">Date & Time</th>
-                            <th class="p-4">Event</th>
-                            <th class="p-4">User ID</th>
-                            <th class="p-4">Amount (100%)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body" class="divide-y divide-slate-800/50 text-slate-300"></tbody>
-                </table>
+
+        <!-- Weekly Daily Breakdown -->
+        <div class="glass p-6 rounded-2xl">
+            <h2 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4">Daily Performance (Current Cycle)</h2>
+            <div id="daily-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
+                <!-- Injected via JS -->
             </div>
         </div>
     </div>
+
+    <!-- TAB 2: CUSTOM ANALYTICS VIEW -->
+    <div id="view-analytics" class="hidden flex-col gap-6">
+        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-end">
+            <div>
+                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">Start Date</label>
+                <input type="date" id="filter-start" class="bg-slate-900 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-48 focus:border-emerald-500">
+            </div>
+            <div>
+                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">End Date</label>
+                <input type="date" id="filter-end" class="bg-slate-900 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-48 focus:border-emerald-500">
+            </div>
+            <button id="btn-apply-filter" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition">Apply Filter</button>
+            <button id="btn-clear-filter" class="text-slate-400 hover:text-white text-sm font-bold py-3 px-4 transition">Clear</button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-panel p-5 rounded-2xl border-l-2 border-slate-500">
+                <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Total Events</p>
+                <p id="stat-events" class="text-2xl font-black text-white mt-1">0</p>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border-l-2 border-emerald-500">
+                <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider">Total Revenue (100%)</p>
+                <p id="stat-revenue" class="text-2xl font-black text-white mt-1">$0.00</p>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border-l-2 border-blue-500">
+                <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider">Estimated Share (50%)</p>
+                <p id="stat-share" class="text-2xl font-black text-white mt-1">$0.00</p>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border-l-2 border-amber-500 text-sm text-slate-400 flex items-center">
+                * Note: Analytics view shows raw aggregated data regardless of billing hold periods or carryovers.
+            </div>
+        </div>
+    </div>
+
+    <!-- SHARED TRANSACTION TABLE -->
+    <div class="glass rounded-2xl p-6 h-[500px] flex flex-col border border-slate-800">
+        <div class="flex justify-between items-center mb-4">
+            <h2 id="table-title" class="text-sm font-bold text-slate-300 uppercase tracking-wider">Transaction Ledger</h2>
+            <span id="table-count" class="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full">0 Records</span>
+        </div>
+        <div class="flex-grow overflow-auto custom-scrollbar border border-slate-800/50 rounded-xl bg-slate-900/50">
+            <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead class="sticky top-0 bg-slate-950 text-slate-400 text-[10px] uppercase tracking-wider z-10 shadow-md">
+                    <tr>
+                        <th class="p-4 font-black">Date (Local)</th>
+                        <th class="p-4 font-black">Event</th>
+                        <th class="p-4 font-black">User ID</th>
+                        <th class="p-4 font-black">Country</th>
+                        <th class="p-4 font-black">Campaign (Sub1)</th>
+                        <th class="p-4 font-black">Tx ID</th>
+                        <th class="p-4 font-black text-right">Amount (100%)</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body" class="divide-y divide-slate-800/80 text-slate-300">
+                    <!-- Injected via JS -->
+                </tbody>
+            </table>
+            <div id="table-empty" class="hidden text-center p-10 text-slate-500 text-sm">No transactions found for this period.</div>
+        </div>
+    </div>
+
 </div>
 
 <script type="module">
@@ -92,7 +175,7 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // Path to your config file
+    // IMPORTANT: Path to your config file
     import { firebaseConfig } from './config.js';
 
     const app = initializeApp(firebaseConfig);
@@ -100,199 +183,372 @@
     const db = getDatabase(app);
 
     const MIN_PAYOUT = 100.00;
+    
+    // Global State
+    let allTransactions = []; 
     let processedCycles = [];
+    let currentActiveTab = 'payouts'; // 'payouts' or 'analytics'
 
-    // Helper: Safely parse various date formats
-    function parseDateSafely(item) {
-        if (!item || !item.server_time) return new Date();
-        const d = new Date(item.server_time);
-        return isNaN(d.getTime()) ? new Date() : d;
+    // UI Elements
+    const el = {
+        login: document.getElementById('login-screen'),
+        dash: document.getElementById('dashboard'),
+        err: document.getElementById('login-error'),
+        btnText: document.getElementById('login-btn-text'),
+        btnLoader: document.getElementById('login-loader'),
+        
+        tabPayouts: document.getElementById('tab-payouts'),
+        tabAnalytics: document.getElementById('tab-analytics'),
+        viewPayouts: document.getElementById('view-payouts'),
+        viewAnalytics: document.getElementById('view-analytics'),
+        
+        cycleSel: document.getElementById('cycle-selector'),
+        tBody: document.getElementById('table-body'),
+        tEmpty: document.getElementById('table-empty'),
+        tCount: document.getElementById('table-count'),
+        tTitle: document.getElementById('table-title')
+    };
+
+    // --- UTILITIES ---
+
+    // Strict Float Math to avoid JS decimal bugs
+    function safeMath(val) { return Math.round(parseFloat(val || 0) * 100) / 100; }
+    function formatMoney(val) { return `$${safeMath(val).toFixed(2)}`; }
+    
+    // Strict UTC Date Math for Financial Cycles
+    function getUTCMonday(ts) {
+        let date = new Date(ts);
+        const day = date.getUTCDay();
+        const diff = date.getUTCDate() - day + (day === 0 ? -6 : 1);
+        return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), diff, 0, 0, 0, 0));
     }
 
-    // Helper: Get Monday of the week
-    function getMonday(d) {
-        let date = new Date(d);
-        const day = date.getDay();
-        const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-        const mon = new Date(date.setDate(diff));
-        mon.setHours(0,0,0,0);
-        return mon;
+    function addDaysUTC(date, days) {
+        let d = new Date(date);
+        d.setUTCDate(d.getUTCDate() + days);
+        return d;
     }
 
-    function formatDate(d) {
+    function formatShortDate(d) {
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
-    // UI Elements
-    const loginScreen = document.getElementById('login-screen');
-    const dashboard = document.getElementById('dashboard');
-    const cycleSelector = document.getElementById('cycle-selector');
-
-    // Auth Logic
+    // --- AUTHENTICATION ---
+    
     document.getElementById('login-btn').onclick = () => {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
-        signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Login Failed: " + err.message));
+        
+        el.err.classList.add('hidden');
+        el.btnText.classList.add('hidden');
+        el.btnLoader.classList.remove('hidden');
+
+        signInWithEmailAndPassword(auth, email, pass).catch(err => {
+            el.err.innerText = err.message.replace('Firebase: ', '');
+            el.err.classList.remove('hidden');
+            el.btnText.classList.remove('hidden');
+            el.btnLoader.classList.add('hidden');
+        });
     };
+
     document.getElementById('logout-btn').onclick = () => signOut(auth);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            loginScreen.classList.add('hidden');
-            dashboard.classList.remove('hidden');
+            el.login.classList.add('hidden');
+            el.dash.classList.remove('hidden');
             fetchDatabase();
         } else {
-            loginScreen.classList.remove('hidden');
-            dashboard.classList.add('hidden');
+            el.login.classList.remove('hidden');
+            el.dash.classList.add('hidden');
+            el.btnText.classList.remove('hidden');
+            el.btnLoader.classList.add('hidden');
         }
     });
+
+    // --- DATA FETCHING & PROCESSING ---
 
     function fetchDatabase() {
         const statsRef = ref(db, 'stats');
         onValue(statsRef, (snapshot) => {
             const rawData = snapshot.val();
             if (!rawData) {
-                cycleSelector.innerHTML = "<option>No Data Available</option>";
+                allTransactions = [];
+                handleEmptyDatabase();
                 return;
             }
 
-            // 1. Process and Sanitize Items
-            const items = Object.values(rawData).map(item => {
-                const pDate = parseDateSafely(item);
+            // Clean data and enforce UTC parsing
+            allTransactions = Object.values(rawData).map(item => {
+                const ts = item.server_time ? new Date(item.server_time).getTime() : Date.now();
                 return {
                     ...item,
-                    _ts: pDate.getTime(),
-                    _amount: parseFloat(item.amount) || 0
+                    _ts: ts,
+                    _amount: safeMath(item.amount)
                 };
-            }).sort((a, b) => a._ts - b._ts);
+            }).sort((a, b) => a._ts - b._ts); // Chronological
 
-            // 2. Group into Monday-Sunday Weeks
-            const weeksMap = {};
-            items.forEach(item => {
-                const mon = getMonday(item._ts);
-                const key = mon.getTime();
-                if (!weeksMap[key]) {
-                    const sun = new Date(mon);
-                    sun.setDate(sun.getDate() + 6);
-                    sun.setHours(23,59,59,999);
-                    weeksMap[key] = { monday: mon, sunday: sun, earnings: 0, data: [] };
-                }
-                weeksMap[key].earnings += item._amount;
-                weeksMap[key].data.push(item);
-            });
-
-            // 3. Apply Carryover and Payout Logic
-            processedCycles = [];
-            let rollingCarryover = 0;
-            const sortedKeys = Object.keys(weeksMap).sort();
-
-            sortedKeys.forEach(key => {
-                const week = weeksMap[key];
-                const totalBalance = week.earnings + rollingCarryover;
-                
-                // Hold ends 7 days after the Sunday of that week
-                const verificationEndDate = new Date(week.sunday);
-                verificationEndDate.setDate(verificationEndDate.getDate() + 7);
-                
-                // Payment is the following Tuesday
-                const payoutDate = new Date(verificationEndDate);
-                payoutDate.setDate(payoutDate.getDate() + ((7 - payoutDate.getDay() + 2) % 7 || 7));
-
-                let status = "";
-                if (totalBalance >= MIN_PAYOUT) {
-                    status = (new Date() > verificationEndDate) ? "READY" : "IN_HOLD";
-                    rollingCarryover = 0; // Balance cleared
-                } else {
-                    status = "CARRYOVER";
-                    rollingCarryover = totalBalance; // Move to next week
-                }
-
-                processedCycles.push({
-                    id: key,
-                    label: `${formatDate(week.monday)} - ${formatDate(week.sunday)}`,
-                    totalBalance: totalBalance,
-                    status: status,
-                    payoutDate: payoutDate,
-                    data: week.data
-                });
-            });
-
-            // 4. Update Dropdown
-            const currentVal = cycleSelector.value;
-            cycleSelector.innerHTML = "";
-            processedCycles.slice().reverse().forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.textContent = `${c.label} (${c.status === 'CARRYOVER' ? 'Below $100' : '$'+c.totalBalance.toFixed(2)})`;
-                cycleSelector.appendChild(opt);
-            });
-
-            const toRender = currentVal && weeksMap[currentVal] ? currentVal : processedCycles[processedCycles.length - 1].id;
-            cycleSelector.value = toRender;
-            renderDashboard(toRender);
+            processFinancialCycles();
+            
+            // Re-render current view
+            if (currentActiveTab === 'payouts') {
+                const currentVal = el.cycleSel.value;
+                populateCycleDropdown();
+                const toRender = currentVal && processedCycles.find(c => c.id == currentVal) ? currentVal : processedCycles[processedCycles.length - 1].id;
+                el.cycleSel.value = toRender;
+                renderPayoutView(toRender);
+            } else {
+                applyAnalyticsFilter();
+            }
         });
     }
 
-    function renderDashboard(cycleId) {
+    function handleEmptyDatabase() {
+        el.cycleSel.innerHTML = "<option>No Data Available</option>";
+        el.tBody.innerHTML = "";
+        el.tEmpty.classList.remove('hidden');
+    }
+
+    function processFinancialCycles() {
+        if (allTransactions.length === 0) return;
+
+        processedCycles = [];
+        const weeksMap = {};
+        
+        // 1. Find earliest transaction and create gapless weeks up to today
+        const firstTxDate = new Date(allTransactions[0]._ts);
+        const today = new Date();
+        
+        let currentIterMonday = getUTCMonday(firstTxDate);
+        const lastMonday = getUTCMonday(today);
+
+        // Fill mapping with empty weeks to ensure carryover bridges gaps
+        while (currentIterMonday <= lastMonday) {
+            const key = currentIterMonday.getTime();
+            const sun = addDaysUTC(currentIterMonday, 6);
+            sun.setUTCHours(23, 59, 59, 999);
+            
+            weeksMap[key] = { monday: currentIterMonday, sunday: sun, earnings: 0, data: [] };
+            currentIterMonday = addDaysUTC(currentIterMonday, 7);
+        }
+
+        // 2. Distribute transactions into weeks
+        allTransactions.forEach(item => {
+            const mon = getUTCMonday(item._ts);
+            const key = mon.getTime();
+            if (weeksMap[key]) {
+                weeksMap[key].earnings = safeMath(weeksMap[key].earnings + item._amount);
+                weeksMap[key].data.push(item);
+            }
+        });
+
+        // 3. Process Math Chronologically (Carryover Logic)
+        let rollingCarryover = 0;
+        const sortedKeys = Object.keys(weeksMap).sort();
+
+        sortedKeys.forEach(key => {
+            const week = weeksMap[key];
+            const startBalance = safeMath(rollingCarryover);
+            const newEarnings = safeMath(week.earnings);
+            const totalBalance = safeMath(startBalance + newEarnings);
+            
+            // Hold ends 7 days after Sunday UTC
+            const verificationEndDate = addDaysUTC(week.sunday, 7);
+            
+            // Payment is Tuesday after verification
+            let payoutDate = new Date(verificationEndDate);
+            payoutDate.setUTCDate(payoutDate.getUTCDate() + ((7 - payoutDate.getUTCDay() + 2) % 7 || 7));
+
+            let status = "";
+            let carriesToNext = false;
+
+            if (totalBalance >= MIN_PAYOUT) {
+                status = (new Date() > verificationEndDate) ? "READY / PAID" : "IN HOLD (7 Days)";
+                rollingCarryover = 0; // Clears
+            } else {
+                status = "CARRYOVER";
+                carriesToNext = true;
+                rollingCarryover = totalBalance; // Rolls over
+            }
+
+            processedCycles.push({
+                id: key,
+                label: `${formatShortDate(week.monday)} - ${formatShortDate(week.sunday)}`,
+                startBalance,
+                newEarnings,
+                totalBalance,
+                status,
+                carriesToNext,
+                payoutDate,
+                data: week.data.reverse() // Newest first
+            });
+        });
+    }
+
+    // --- UI RENDERING ---
+
+    function populateCycleDropdown() {
+        el.cycleSel.innerHTML = "";
+        // Show newest weeks first
+        processedCycles.slice().reverse().forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = `${c.label} (${c.status === 'CARRYOVER' ? 'Below $100' : formatMoney(c.totalBalance)})`;
+            el.cycleSel.appendChild(opt);
+        });
+    }
+
+    function renderPayoutView(cycleId) {
         const cycle = processedCycles.find(c => c.id == cycleId);
         if (!cycle) return;
 
-        // Update Boxes
-        document.getElementById('box-total-rev').innerText = `$${cycle.totalBalance.toFixed(2)}`;
-        document.getElementById('box-partner-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
-        document.getElementById('box-my-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
+        // Ledger Math
+        document.getElementById('box-carryover').innerText = formatMoney(cycle.startBalance);
+        document.getElementById('box-new-earnings').innerText = formatMoney(cycle.newEarnings);
+        document.getElementById('box-total').innerText = formatMoney(cycle.totalBalance);
+        document.getElementById('box-share').innerText = formatMoney(cycle.totalBalance / 2);
 
-        const statusEl = document.getElementById('payout-status-label');
-        const payDateEl = document.getElementById('box-payment-date');
-
+        // Status Banner Generation
+        const banner = document.getElementById('payout-banner');
         if (cycle.status === "CARRYOVER") {
-            statusEl.innerHTML = `<span class="bg-amber-500/20 text-amber-500 status-badge">Rolls Over</span>`;
-            payDateEl.innerText = "Below $100";
-            payDateEl.className = "text-lg font-bold text-amber-500 mt-1";
-        } else if (cycle.status === "IN_HOLD") {
-            statusEl.innerHTML = `<span class="bg-blue-500/20 text-blue-500 status-badge">Verification Hold</span>`;
-            payDateEl.innerText = formatDate(cycle.payoutDate);
-            payDateEl.className = "text-lg font-bold text-blue-400 mt-1";
+            banner.className = "mt-6 p-4 rounded-xl border bg-amber-500/10 border-amber-500/30 flex flex-col gap-1";
+            banner.innerHTML = `
+                <span class="text-amber-500 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-amber-500"></div> Balance Rolls Over</span>
+                <p class="text-slate-300 text-sm mt-1">Amount is under $100.00 threshold. It has been carried over to the next week.</p>
+            `;
+        } else if (cycle.status.includes("HOLD")) {
+            banner.className = "mt-6 p-4 rounded-xl border bg-blue-500/10 border-blue-500/30 flex flex-col gap-1";
+            banner.innerHTML = `
+                <span class="text-blue-400 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-blue-400"></div> Verification Hold</span>
+                <p class="text-slate-300 text-sm mt-1">Holding for fraud check. Expected Payment: <b>${formatShortDate(cycle.payoutDate)}</b>.</p>
+            `;
         } else {
-            statusEl.innerHTML = `<span class="bg-emerald-500/20 text-emerald-500 status-badge">Available / Paid</span>`;
-            payDateEl.innerText = formatDate(cycle.payoutDate);
-            payDateEl.className = "text-lg font-bold text-emerald-400 mt-1";
+            banner.className = "mt-6 p-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 flex flex-col gap-1";
+            banner.innerHTML = `
+                <span class="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-400"></div> Funds Available</span>
+                <p class="text-slate-300 text-sm mt-1">Cycle complete. Scheduled Payment Date was: <b>${formatShortDate(cycle.payoutDate)}</b>.</p>
+            `;
         }
 
-        // Table
-        const tbody = document.getElementById('table-body');
-        tbody.innerHTML = "";
-        cycle.data.slice().reverse().forEach(item => {
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-800/30 transition">
-                    <td class="p-4 text-slate-400 font-mono text-xs">${new Date(item._ts).toLocaleString()}</td>
-                    <td class="p-4"><span class="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold">${item.event_type}</span></td>
-                    <td class="p-4 text-emerald-400 font-mono text-xs">${item.user_id}</td>
-                    <td class="p-4 font-bold ${item._amount > 0 ? 'text-emerald-400' : 'text-slate-500'}">$${item._amount.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-
-        // Daily Breakdown
+        // Daily Breakdown Grid
         const dailyMap = {};
         cycle.data.forEach(item => {
-            const day = formatDate(new Date(item._ts));
-            dailyMap[day] = (dailyMap[day] || 0) + item._amount;
+            const dayStr = formatShortDate(new Date(item._ts));
+            dailyMap[dayStr] = safeMath((dailyMap[dayStr] || 0) + item._amount);
         });
 
-        const dailyList = document.getElementById('daily-list');
-        dailyList.innerHTML = "";
-        Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a)).forEach(day => {
-            dailyList.innerHTML += `
-                <div class="p-4 bg-slate-800/30 border border-slate-700/50 rounded-xl flex justify-between items-center">
-                    <p class="text-sm font-bold text-slate-200">${day}</p>
-                    <p class="text-lg font-black text-emerald-400">$${dailyMap[day].toFixed(2)}</p>
+        const grid = document.getElementById('daily-grid');
+        grid.innerHTML = "";
+        
+        // Ensure 7 days are represented even if 0
+        let tempDate = new Date(parseInt(cycleId));
+        for(let i=0; i<7; i++) {
+            const dStr = formatShortDate(tempDate);
+            const val = dailyMap[dStr] || 0;
+            grid.innerHTML += `
+                <div class="bg-slate-800/40 border border-slate-700/50 p-3 rounded-xl text-center">
+                    <p class="text-xs text-slate-400 font-bold mb-1">${tempDate.toLocaleDateString('en-US', {weekday:'short'})}</p>
+                    <p class="text-sm font-black ${val > 0 ? 'text-emerald-400' : 'text-slate-500'}">${formatMoney(val)}</p>
                 </div>
+            `;
+            tempDate = addDaysUTC(tempDate, 1);
+        }
+
+        el.tTitle.innerText = `Transactions: ${cycle.label}`;
+        renderTable(cycle.data);
+    }
+
+    function applyAnalyticsFilter() {
+        const sVal = document.getElementById('filter-start').value;
+        const eVal = document.getElementById('filter-end').value;
+
+        let filtered = allTransactions;
+        
+        if (sVal) {
+            const startTs = new Date(sVal + 'T00:00:00').getTime();
+            filtered = filtered.filter(t => t._ts >= startTs);
+        }
+        if (eVal) {
+            const endTs = new Date(eVal + 'T23:59:59').getTime();
+            filtered = filtered.filter(t => t._ts <= endTs);
+        }
+
+        const rev = filtered.reduce((sum, val) => sum + val._amount, 0);
+        
+        document.getElementById('stat-events').innerText = filtered.length;
+        document.getElementById('stat-revenue').innerText = formatMoney(rev);
+        document.getElementById('stat-share').innerText = formatMoney(rev / 2);
+        
+        el.tTitle.innerText = `Filtered Transactions`;
+        renderTable(filtered.slice().reverse()); // Newest first
+    }
+
+    function renderTable(dataArray) {
+        el.tBody.innerHTML = "";
+        el.tCount.innerText = `${dataArray.length} Records`;
+        
+        if (dataArray.length === 0) {
+            el.tEmpty.classList.remove('hidden');
+            return;
+        }
+        el.tEmpty.classList.add('hidden');
+
+        dataArray.forEach(item => {
+            const dateLocal = new Date(item._ts).toLocaleString('en-US', { 
+                month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'
+            });
+            
+            const badgeColor = item.event_type.toLowerCase().includes('reg') ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-slate-800 text-slate-300 border-slate-700';
+            
+            el.tBody.innerHTML += `
+                <tr class="hover:bg-slate-800/40 transition group">
+                    <td class="p-4 text-slate-400 font-mono text-xs">${dateLocal}</td>
+                    <td class="p-4"><span class="border px-2 py-1 rounded text-[10px] font-black tracking-wider ${badgeColor}">${item.event_type}</span></td>
+                    <td class="p-4 text-slate-300 font-mono text-xs">${item.user_id || '-'}</td>
+                    <td class="p-4 text-slate-400 text-xs">${item.country || '-'}</td>
+                    <td class="p-4 text-slate-400 text-xs truncate max-w-[120px]" title="${item.sub1}">${item.sub1 || '-'}</td>
+                    <td class="p-4 text-slate-500 font-mono text-[10px] group-hover:text-slate-300 transition">${item.transaction_id || '-'}</td>
+                    <td class="p-4 font-black text-right ${item._amount > 0 ? 'text-emerald-400' : 'text-slate-600'}">${formatMoney(item._amount)}</td>
+                </tr>
             `;
         });
     }
 
-    cycleSelector.onchange = (e) => renderDashboard(e.target.value);
+    // --- EVENT LISTENERS ---
+
+    el.cycleSel.onchange = (e) => renderPayoutView(e.target.value);
+    
+    document.getElementById('btn-apply-filter').onclick = applyAnalyticsFilter;
+    document.getElementById('btn-clear-filter').onclick = () => {
+        document.getElementById('filter-start').value = "";
+        document.getElementById('filter-end').value = "";
+        applyAnalyticsFilter();
+    };
+
+    // Tab Switching Logic
+    function switchTab(tab) {
+        currentActiveTab = tab;
+        if (tab === 'payouts') {
+            el.tabPayouts.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-active";
+            el.tabAnalytics.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-inactive";
+            el.viewPayouts.classList.remove('hidden');
+            el.viewPayouts.classList.add('flex');
+            el.viewAnalytics.classList.add('hidden');
+            el.viewAnalytics.classList.remove('flex');
+            if (processedCycles.length) renderPayoutView(el.cycleSel.value);
+        } else {
+            el.tabAnalytics.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-active";
+            el.tabPayouts.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-inactive";
+            el.viewAnalytics.classList.remove('hidden');
+            el.viewAnalytics.classList.add('flex');
+            el.viewPayouts.classList.add('hidden');
+            el.viewPayouts.classList.remove('flex');
+            applyAnalyticsFilter();
+        }
+    }
+
+    el.tabPayouts.onclick = () => switchTab('payouts');
+    el.tabAnalytics.onclick = () => switchTab('analytics');
 
 </script>
 </body>
