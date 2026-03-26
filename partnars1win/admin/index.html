@@ -3,552 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1win Partner Admin | Professional Tracking</title>
+    <title>1win Partner Admin | Pro Financial Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); }
-        .glass-panel { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.05); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        body { background-color: #080b14; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        .glass-panel { background: rgba(10, 15, 28, 0.8); border: 1px solid rgba(255,255,255,0.03); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         .tab-active { border-bottom: 2px solid #10b981; color: #10b981; }
         .tab-inactive { color: #64748b; border-bottom: 2px solid transparent; }
-        .tab-inactive:hover { color: #94a3b8; border-color: #475569; }
-        /* Loader */
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: #10b981; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        .loader { border: 2px solid rgba(255,255,255,0.1); border-left-color: #10b981; border-radius: 50%; width: 18px; height: 18px; animation: spin 0.8s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .mono { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
-<body class="p-4 md:p-8 custom-scrollbar">
+<body class="p-3 md:p-8 custom-scrollbar">
 
-<!-- LOGIN SCREEN -->
-<div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl transition-all duration-300">
-    <div class="text-center mb-8">
-        <h1 class="text-3xl font-extrabold text-white tracking-tight">1win Partner</h1>
-        <p class="text-slate-400 text-sm mt-2">Secure Tracking System (50/50)</p>
+<!-- LOGIN SECTION -->
+<div id="login-screen" class="max-w-md mx-auto mt-20 p-8 glass rounded-3xl shadow-2xl transition-all">
+    <div class="text-center mb-10">
+        <h1 class="text-3xl font-extrabold text-white tracking-tighter">1win <span class="text-emerald-500">Partner</span></h1>
+        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mt-2">Financial Accounting System</p>
     </div>
-    <div id="login-error" class="hidden bg-red-500/10 border border-red-500/50 text-red-400 text-xs p-3 rounded-lg mb-4 text-center"></div>
-    <input type="email" id="email" placeholder="Email Address" class="w-full p-4 mb-4 rounded-xl bg-slate-800/50 border border-slate-700 focus:outline-none focus:border-emerald-500 transition text-white">
-    <input type="password" id="password" placeholder="Password" class="w-full p-4 mb-6 rounded-xl bg-slate-800/50 border border-slate-700 focus:outline-none focus:border-emerald-500 transition text-white">
-    <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition flex justify-center items-center h-14">
-        <span id="login-btn-text">Sign In securely</span>
-        <div id="login-loader" class="loader hidden"></div>
-    </button>
+    <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs p-4 rounded-xl mb-6 text-center"></div>
+    <div class="space-y-4">
+        <input type="email" id="email" placeholder="Admin Email" class="w-full p-4 rounded-xl bg-slate-900/50 border border-slate-800 focus:outline-none focus:border-emerald-500 transition text-white text-sm">
+        <input type="password" id="password" placeholder="Password" class="w-full p-4 rounded-xl bg-slate-900/50 border border-slate-800 focus:outline-none focus:border-emerald-500 transition text-white text-sm">
+        <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl transition flex justify-center items-center gap-3">
+            <span id="login-btn-text">INITIALIZE ACCESS</span>
+            <div id="login-loader" class="loader hidden"></div>
+        </button>
+    </div>
 </div>
 
-<!-- MAIN DASHBOARD -->
-<div id="dashboard" class="hidden max-w-[1400px] mx-auto flex flex-col gap-6">
+<!-- DASHBOARD SECTION -->
+<div id="dashboard" class="hidden max-w-[1500px] mx-auto flex flex-col gap-6 scale-95 opacity-0 transition-all duration-500">
     
-    <!-- HEADER -->
-    <div class="glass p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-            <h1 class="text-2xl font-black text-white tracking-tight">Financial Dashboard</h1>
-            <p class="text-slate-400 text-sm mt-1">Real-time sync • Strict UTC Billing • $100 Min Threshold</p>
-        </div>
-        <div class="flex items-center gap-4 w-full md:w-auto">
-            <div id="db-status" class="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
-                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div> Live
+    <!-- TOP HEADER -->
+    <div class="glass p-5 rounded-2xl flex flex-col lg:row md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+            <div class="bg-emerald-500/20 p-3 rounded-xl"><div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse"></div></div>
+            <div>
+                <h1 class="text-xl font-black text-white tracking-tight">Consolidated Ledger</h1>
+                <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest">Global UTC Standard • 50/50 Revenue Share</p>
             </div>
-            <button id="logout-btn" class="text-slate-400 hover:text-white text-sm font-bold transition">Sign Out</button>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="hidden md:block h-8 w-[1px] bg-slate-800 mx-2"></div>
+            <button id="logout-btn" class="text-slate-500 hover:text-white text-xs font-black uppercase transition ml-auto">Terminate Session</button>
         </div>
     </div>
 
-    <!-- TABS NAVIGATION -->
-    <div class="flex gap-6 border-b border-slate-800 mb-2 px-2">
-        <button id="tab-payouts" class="pb-3 text-sm font-bold tracking-wide transition-all tab-active">WEEKLY PAYOUTS</button>
-        <button id="tab-analytics" class="pb-3 text-sm font-bold tracking-wide transition-all tab-inactive">CUSTOM ANALYTICS</button>
+    <!-- TABS -->
+    <div class="flex gap-8 border-b border-slate-800/50 px-2">
+        <button id="tab-payouts" class="pb-3 text-xs font-black tracking-widest tab-active uppercase">Weekly Settlement</button>
+        <button id="tab-analytics" class="pb-3 text-xs font-black tracking-widest tab-inactive uppercase">Performance Analytics</button>
     </div>
 
-    <!-- TAB 1: WEEKLY PAYOUTS VIEW -->
+    <!-- PAYOUT VIEW -->
     <div id="view-payouts" class="flex flex-col gap-6">
         
-        <!-- Controls & Ledger -->
-        <div class="glass p-6 rounded-2xl flex flex-col xl:flex-row gap-6">
-            <!-- Selector -->
-            <div class="xl:w-1/3 flex flex-col justify-center border-r border-slate-800/50 pr-6">
-                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">Select Billing Cycle (UTC)</label>
-                <select id="cycle-selector" class="bg-slate-900 text-white text-sm p-4 rounded-xl border border-slate-700 outline-none w-full cursor-pointer focus:border-emerald-500 transition shadow-inner appearance-none"></select>
-                
-                <div id="payout-banner" class="mt-6 p-4 rounded-xl border flex flex-col gap-1">
-                    <!-- Injected via JS -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <!-- Cycle Selector Panel -->
+            <div class="xl:col-span-4 glass p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-3 text-center md:text-left">Selected Billing Period</label>
+                    <select id="cycle-selector" class="bg-slate-950 text-white text-sm p-4 rounded-xl border border-slate-800 outline-none w-full cursor-pointer focus:border-emerald-500 appearance-none shadow-2xl mb-4"></select>
                 </div>
+                <div id="payout-banner" class="p-4 rounded-xl border text-center transition-all"></div>
             </div>
 
-            <!-- Ledger Math -->
-            <div class="xl:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-center">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Carried Over</p>
-                    <p id="box-carryover" class="text-xl font-black text-slate-300 mt-1">$0.00</p>
+            <!-- Math Summary -->
+            <div class="xl:col-span-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-slate-700">
+                    <p class="text-slate-500 text-[10px] font-black uppercase tracking-wider">Carryover Debt/Credit</p>
+                    <p id="box-carryover" class="text-2xl font-black mt-2 mono tracking-tighter">--</p>
                 </div>
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-center relative">
-                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 text-slate-600 font-black">+</div>
-                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">New Earnings</p>
-                    <p id="box-new-earnings" class="text-xl font-black text-emerald-400 mt-1">$0.00</p>
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-blue-500">
+                    <p class="text-blue-500 text-[10px] font-black uppercase tracking-wider">New Net Revenue</p>
+                    <p id="box-new-earnings" class="text-2xl font-black mt-2 mono tracking-tighter">--</p>
                 </div>
-                <div class="glass-panel p-4 rounded-xl border border-emerald-500/30 flex flex-col justify-center relative bg-emerald-900/10">
-                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 text-slate-600 font-black">=</div>
-                    <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-wider">Total Balance (100%)</p>
-                    <p id="box-total" class="text-2xl font-black text-white mt-1">$0.00</p>
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-emerald-500 bg-emerald-500/5">
+                    <p class="text-emerald-500 text-[10px] font-black uppercase tracking-wider">Total Balance (100%)</p>
+                    <p id="box-total" class="text-3xl font-black mt-2 mono tracking-tighter text-white">--</p>
                 </div>
-                <div class="glass-panel p-4 rounded-xl border border-blue-500/30 flex flex-col justify-center bg-blue-900/10">
-                    <p class="text-blue-400 text-[10px] font-bold uppercase tracking-wider">Your Share (50%)</p>
-                    <p id="box-share" class="text-2xl font-black text-white mt-1">$0.00</p>
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-indigo-500 bg-indigo-500/5">
+                    <p class="text-indigo-400 text-[10px] font-black uppercase tracking-wider">Partner Share (50%)</p>
+                    <p id="box-share" class="text-3xl font-black mt-2 mono tracking-tighter text-white">--</p>
                 </div>
             </div>
         </div>
 
-        <!-- Weekly Daily Breakdown -->
-        <div class="glass p-6 rounded-2xl">
-            <h2 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4">Daily Performance (Current Cycle)</h2>
-            <div id="daily-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
-                <!-- Injected via JS -->
+        <!-- Weekly Performance Bar -->
+        <div class="glass p-6 rounded-2xl overflow-x-auto custom-scrollbar">
+            <h2 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Weekly Day-by-Day (UTC)</h2>
+            <div id="daily-grid" class="flex gap-4 min-w-[800px] justify-between">
+                <!-- Days injected here -->
             </div>
         </div>
     </div>
 
-    <!-- TAB 2: CUSTOM ANALYTICS VIEW -->
+    <!-- ANALYTICS VIEW -->
     <div id="view-analytics" class="hidden flex-col gap-6">
-        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-end">
-            <div>
-                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">Start Date</label>
-                <input type="date" id="filter-start" class="bg-slate-900 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-48 focus:border-emerald-500">
+        <div class="glass p-6 rounded-2xl flex flex-wrap items-end gap-6">
+            <div class="flex-grow">
+                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">Performance Range</label>
+                <div class="flex items-center gap-3">
+                    <input type="date" id="filter-start" class="bg-slate-950 text-white text-xs p-3 rounded-lg border border-slate-800 outline-none w-full focus:border-emerald-500">
+                    <span class="text-slate-700">to</span>
+                    <input type="date" id="filter-end" class="bg-slate-950 text-white text-xs p-3 rounded-lg border border-slate-800 outline-none w-full focus:border-emerald-500">
+                </div>
             </div>
-            <div>
-                <label class="text-[10px] text-slate-500 font-black uppercase tracking-widest block mb-2">End Date</label>
-                <input type="date" id="filter-end" class="bg-slate-900 text-white text-sm p-3 rounded-xl border border-slate-700 outline-none w-full md:w-48 focus:border-emerald-500">
-            </div>
-            <button id="btn-apply-filter" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition">Apply Filter</button>
-            <button id="btn-clear-filter" class="text-slate-400 hover:text-white text-sm font-bold py-3 px-4 transition">Clear</button>
+            <button id="btn-apply-filter" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-black py-3.5 px-8 rounded-lg transition uppercase">Filter Data</button>
+            <button id="btn-clear-filter" class="text-slate-500 hover:text-white text-xs font-black transition py-3.5">Reset</button>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="glass-panel p-5 rounded-2xl border-l-2 border-slate-500">
-                <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Total Events</p>
-                <p id="stat-events" class="text-2xl font-black text-white mt-1">0</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Events Captured</p>
+                <p id="stat-events" class="text-3xl font-black text-white mt-1 mono">0</p>
             </div>
-            <div class="glass-panel p-5 rounded-2xl border-l-2 border-emerald-500">
-                <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider">Total Revenue (100%)</p>
-                <p id="stat-revenue" class="text-2xl font-black text-white mt-1">$0.00</p>
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500">
+                <p class="text-emerald-500 text-[10px] font-black uppercase tracking-widest">Gross Captured Volume</p>
+                <p id="stat-revenue" class="text-3xl font-black text-white mt-1 mono">$0.00</p>
             </div>
-            <div class="glass-panel p-5 rounded-2xl border-l-2 border-blue-500">
-                <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider">Estimated Share (50%)</p>
-                <p id="stat-share" class="text-2xl font-black text-white mt-1">$0.00</p>
-            </div>
-            <div class="glass-panel p-5 rounded-2xl border-l-2 border-amber-500 text-sm text-slate-400 flex items-center">
-                * Note: Analytics view shows raw aggregated data regardless of billing hold periods or carryovers.
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-indigo-500">
+                <p class="text-indigo-400 text-[10px] font-black uppercase tracking-widest">Estimated 50% Yield</p>
+                <p id="stat-share" class="text-3xl font-black text-white mt-1 mono">$0.00</p>
             </div>
         </div>
     </div>
 
-    <!-- SHARED TRANSACTION TABLE -->
-    <div class="glass rounded-2xl p-6 h-[500px] flex flex-col border border-slate-800">
-        <div class="flex justify-between items-center mb-4">
-            <h2 id="table-title" class="text-sm font-bold text-slate-300 uppercase tracking-wider">Transaction Ledger</h2>
-            <span id="table-count" class="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full">0 Records</span>
+    <!-- LEDGER TABLE -->
+    <div class="glass rounded-2xl overflow-hidden flex flex-col border border-slate-800/50">
+        <div class="p-5 border-b border-slate-800/50 flex justify-between items-center bg-slate-950/50">
+            <h2 id="table-title" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Audit Logs</h2>
+            <div class="flex gap-4">
+                <span id="table-count" class="text-[10px] font-black text-slate-500 bg-slate-900 px-3 py-1 rounded-full uppercase">0 Logs</span>
+            </div>
         </div>
-        <div class="flex-grow overflow-auto custom-scrollbar border border-slate-800/50 rounded-xl bg-slate-900/50">
-            <table class="w-full text-left text-sm whitespace-nowrap">
-                <thead class="sticky top-0 bg-slate-950 text-slate-400 text-[10px] uppercase tracking-wider z-10 shadow-md">
-                    <tr>
-                        <th class="p-4 font-black">Date (Local)</th>
-                        <th class="p-4 font-black">Event</th>
-                        <th class="p-4 font-black">User ID</th>
-                        <th class="p-4 font-black">Country</th>
-                        <th class="p-4 font-black">Campaign (Sub1)</th>
-                        <th class="p-4 font-black">Tx ID</th>
-                        <th class="p-4 font-black text-right">Amount (100%)</th>
+        <div class="overflow-x-auto custom-scrollbar h-[500px]">
+            <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="sticky top-0 bg-slate-950 text-slate-500 text-[9px] uppercase font-black tracking-widest z-20">
+                    <tr class="border-b border-slate-800">
+                        <th class="p-5">Time (Local)</th>
+                        <th class="p-5">Classification</th>
+                        <th class="p-5">User/Context</th>
+                        <th class="p-5">Region</th>
+                        <th class="p-5">Campaign Path</th>
+                        <th class="p-5 text-right">Value (100%)</th>
                     </tr>
                 </thead>
-                <tbody id="table-body" class="divide-y divide-slate-800/80 text-slate-300">
-                    <!-- Injected via JS -->
-                </tbody>
+                <tbody id="table-body" class="divide-y divide-slate-800/40 text-slate-300"></tbody>
             </table>
-            <div id="table-empty" class="hidden text-center p-10 text-slate-500 text-sm">No transactions found for this period.</div>
+            <div id="table-empty" class="hidden flex flex-col items-center justify-center p-20 text-slate-600">
+                <div class="text-4xl mb-2">∅</div>
+                <p class="text-xs uppercase font-black">Null Transaction State</p>
+            </div>
         </div>
     </div>
-
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    // IMPORTANT: Path to your config file
     import { firebaseConfig } from './config.js';
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const MIN_PAYOUT = 100.00;
+    // SYSTEM CONSTANTS
+    const THRESHOLD = 100.00;
+    const PAYABLE_EVENTS = ['Revenue']; 
     
-    // Global State
-    let allTransactions = []; 
-    let processedCycles = [];
-    let currentActiveTab = 'payouts'; // 'payouts' or 'analytics'
+    // STATE
+    let transactions = [];
+    let cycles = [];
+    let activeTab = 'payouts';
 
-    // UI Elements
-    const el = {
-        login: document.getElementById('login-screen'),
-        dash: document.getElementById('dashboard'),
-        err: document.getElementById('login-error'),
-        btnText: document.getElementById('login-btn-text'),
-        btnLoader: document.getElementById('login-loader'),
-        
-        tabPayouts: document.getElementById('tab-payouts'),
-        tabAnalytics: document.getElementById('tab-analytics'),
-        viewPayouts: document.getElementById('view-payouts'),
-        viewAnalytics: document.getElementById('view-analytics'),
-        
-        cycleSel: document.getElementById('cycle-selector'),
-        tBody: document.getElementById('table-body'),
-        tEmpty: document.getElementById('table-empty'),
-        tCount: document.getElementById('table-count'),
-        tTitle: document.getElementById('table-title')
+    // MATH HELPERS
+    const clean = (v) => Math.round(parseFloat(v || 0) * 100) / 100;
+    const money = (v) => {
+        const val = clean(v);
+        const color = val < 0 ? 'text-red-500' : 'text-emerald-500';
+        return `<span class="${color}">${val < 0 ? '-' : ''}$${Math.abs(val).toFixed(2)}</span>`;
     };
 
-    // --- UTILITIES ---
+    // DATE HELPERS (UTC)
+    const getMonday = (ts) => {
+        let d = new Date(ts);
+        const day = d.getUTCDay();
+        const diff = d.getUTCDate() - day + (day === 0 ? -6 : 1);
+        return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), diff, 0, 0, 0, 0));
+    };
+    const addDays = (d, n) => {
+        let res = new Date(d);
+        res.setUTCDate(res.getUTCDate() + n);
+        return res;
+    };
+    const fDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-    // Strict Float Math to avoid JS decimal bugs
-    function safeMath(val) { return Math.round(parseFloat(val || 0) * 100) / 100; }
-    function formatMoney(val) { return `$${safeMath(val).toFixed(2)}`; }
-    
-    // Strict UTC Date Math for Financial Cycles
-    function getUTCMonday(ts) {
-        let date = new Date(ts);
-        const day = date.getUTCDay();
-        const diff = date.getUTCDate() - day + (day === 0 ? -6 : 1);
-        return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), diff, 0, 0, 0, 0));
-    }
-
-    function addDaysUTC(date, days) {
-        let d = new Date(date);
-        d.setUTCDate(d.getUTCDate() + days);
-        return d;
-    }
-
-    function formatShortDate(d) {
-        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-
-    // --- AUTHENTICATION ---
-    
-    document.getElementById('login-btn').onclick = () => {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
-        
-        el.err.classList.add('hidden');
-        el.btnText.classList.add('hidden');
-        el.btnLoader.classList.remove('hidden');
-
-        signInWithEmailAndPassword(auth, email, pass).catch(err => {
-            el.err.innerText = err.message.replace('Firebase: ', '');
-            el.err.classList.remove('hidden');
-            el.btnText.classList.remove('hidden');
-            el.btnLoader.classList.add('hidden');
+    // AUTH
+    const btn = document.getElementById('login-btn');
+    btn.onclick = () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('password').value;
+        document.getElementById('login-btn-text').classList.add('hidden');
+        document.getElementById('login-loader').classList.remove('hidden');
+        signInWithEmailAndPassword(auth, e, p).catch(err => {
+            const errEl = document.getElementById('login-error');
+            errEl.innerText = "ACCESS DENIED: " + err.message.replace('Firebase:', '');
+            errEl.classList.remove('hidden');
+            document.getElementById('login-btn-text').classList.remove('hidden');
+            document.getElementById('login-loader').classList.add('hidden');
         });
     };
-
     document.getElementById('logout-btn').onclick = () => signOut(auth);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            el.login.classList.add('hidden');
-            el.dash.classList.remove('hidden');
-            fetchDatabase();
+    onAuthStateChanged(auth, (u) => {
+        const dash = document.getElementById('dashboard');
+        const login = document.getElementById('login-screen');
+        if (u) {
+            login.classList.add('hidden');
+            dash.classList.remove('hidden');
+            setTimeout(() => { dash.classList.add('scale-100', 'opacity-100'); }, 100);
+            fetch();
         } else {
-            el.login.classList.remove('hidden');
-            el.dash.classList.add('hidden');
-            el.btnText.classList.remove('hidden');
-            el.btnLoader.classList.add('hidden');
+            login.classList.remove('hidden');
+            dash.classList.add('hidden', 'scale-95', 'opacity-0');
         }
     });
 
-    // --- DATA FETCHING & PROCESSING ---
-
-    function fetchDatabase() {
-        const statsRef = ref(db, 'stats');
-        onValue(statsRef, (snapshot) => {
-            const rawData = snapshot.val();
-            if (!rawData) {
-                allTransactions = [];
-                handleEmptyDatabase();
-                return;
-            }
-
-            // Clean data and enforce UTC parsing
-            allTransactions = Object.values(rawData).map(item => {
-                const ts = item.server_time ? new Date(item.server_time).getTime() : Date.now();
-                return {
-                    ...item,
-                    _ts: ts,
-                    _amount: safeMath(item.amount)
-                };
-            }).sort((a, b) => a._ts - b._ts); // Chronological
-
-            processFinancialCycles();
+    // DATA ENGINE
+    function fetch() {
+        onValue(ref(db, 'stats'), (snap) => {
+            const data = snap.val();
+            if (!data) return handleEmpty();
             
-            // Re-render current view
-            if (currentActiveTab === 'payouts') {
-                const currentVal = el.cycleSel.value;
-                populateCycleDropdown();
-                const toRender = currentVal && processedCycles.find(c => c.id == currentVal) ? currentVal : processedCycles[processedCycles.length - 1].id;
-                el.cycleSel.value = toRender;
-                renderPayoutView(toRender);
-            } else {
-                applyAnalyticsFilter();
-            }
+            transactions = Object.values(data).map(i => {
+                const ts = i.server_time ? new Date(i.server_time).getTime() : Date.now();
+                const amt = clean(i.amount);
+                const isProfit = PAYABLE_EVENTS.includes(i.event_type);
+                return { ...i, _ts: ts, _wallet: isProfit ? amt : 0, _raw: amt };
+            }).sort((a, b) => a._ts - b._ts);
+
+            buildCycles();
+            render();
         });
     }
 
-    function handleEmptyDatabase() {
-        el.cycleSel.innerHTML = "<option>No Data Available</option>";
-        el.tBody.innerHTML = "";
-        el.tEmpty.classList.remove('hidden');
-    }
-
-    function processFinancialCycles() {
-        if (allTransactions.length === 0) return;
-
-        processedCycles = [];
-        const weeksMap = {};
+    function buildCycles() {
+        if (!transactions.length) return;
+        cycles = [];
+        const weeks = {};
         
-        // 1. Find earliest transaction and create gapless weeks up to today
-        const firstTxDate = new Date(allTransactions[0]._ts);
-        const today = new Date();
-        
-        let currentIterMonday = getUTCMonday(firstTxDate);
-        const lastMonday = getUTCMonday(today);
+        let iter = getMonday(transactions[0]._ts);
+        const last = getMonday(Date.now());
 
-        // Fill mapping with empty weeks to ensure carryover bridges gaps
-        while (currentIterMonday <= lastMonday) {
-            const key = currentIterMonday.getTime();
-            const sun = addDaysUTC(currentIterMonday, 6);
-            sun.setUTCHours(23, 59, 59, 999);
-            
-            weeksMap[key] = { monday: currentIterMonday, sunday: sun, earnings: 0, data: [] };
-            currentIterMonday = addDaysUTC(currentIterMonday, 7);
+        while (iter <= last) {
+            const key = iter.getTime();
+            const sun = addDays(iter, 6); sun.setUTCHours(23,59,59,999);
+            weeks[key] = { mon: iter, sun, profit: 0, items: [] };
+            iter = addDays(iter, 7);
         }
 
-        // 2. Distribute transactions into weeks
-        allTransactions.forEach(item => {
-            const mon = getUTCMonday(item._ts);
-            const key = mon.getTime();
-            if (weeksMap[key]) {
-                weeksMap[key].earnings = safeMath(weeksMap[key].earnings + item._amount);
-                weeksMap[key].data.push(item);
+        transactions.forEach(i => {
+            const k = getMonday(i._ts).getTime();
+            if (weeks[k]) {
+                weeks[k].profit = clean(weeks[k].profit + i._wallet);
+                weeks[k].items.push(i);
             }
         });
 
-        // 3. Process Math Chronologically (Carryover Logic)
-        let rollingCarryover = 0;
-        const sortedKeys = Object.keys(weeksMap).sort();
-
-        sortedKeys.forEach(key => {
-            const week = weeksMap[key];
-            const startBalance = safeMath(rollingCarryover);
-            const newEarnings = safeMath(week.earnings);
-            const totalBalance = safeMath(startBalance + newEarnings);
+        let carry = 0;
+        Object.keys(weeks).sort().forEach(k => {
+            const w = weeks[k];
+            const start = clean(carry);
+            const net = clean(w.profit);
+            const total = clean(start + net);
             
-            // Hold ends 7 days after Sunday UTC
-            const verificationEndDate = addDaysUTC(week.sunday, 7);
+            const verifyEnd = addDays(w.sun, 7);
+            const isReady = new Date() > verifyEnd;
+            let status = total >= THRESHOLD ? (isReady ? "SETTLED" : "VERIFYING") : "CARRYOVER";
             
-            // Payment is Tuesday after verification
-            let payoutDate = new Date(verificationEndDate);
-            payoutDate.setUTCDate(payoutDate.getUTCDate() + ((7 - payoutDate.getUTCDay() + 2) % 7 || 7));
+            // Carry over logic (including negative)
+            carry = total >= THRESHOLD && isReady ? 0 : total;
 
-            let status = "";
-            let carriesToNext = false;
-
-            if (totalBalance >= MIN_PAYOUT) {
-                status = (new Date() > verificationEndDate) ? "READY / PAID" : "IN HOLD (7 Days)";
-                rollingCarryover = 0; // Clears
-            } else {
-                status = "CARRYOVER";
-                carriesToNext = true;
-                rollingCarryover = totalBalance; // Rolls over
-            }
-
-            processedCycles.push({
-                id: key,
-                label: `${formatShortDate(week.monday)} - ${formatShortDate(week.sunday)}`,
-                startBalance,
-                newEarnings,
-                totalBalance,
-                status,
-                carriesToNext,
-                payoutDate,
-                data: week.data.reverse() // Newest first
+            cycles.push({
+                id: k,
+                label: `${fDate(w.mon)} - ${fDate(w.sun)}`,
+                start, net, total, status,
+                payoutDate: addDays(verifyEnd, 2),
+                data: w.items.reverse()
             });
         });
-    }
-
-    // --- UI RENDERING ---
-
-    function populateCycleDropdown() {
-        el.cycleSel.innerHTML = "";
-        // Show newest weeks first
-        processedCycles.slice().reverse().forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c.id;
-            opt.textContent = `${c.label} (${c.status === 'CARRYOVER' ? 'Below $100' : formatMoney(c.totalBalance)})`;
-            el.cycleSel.appendChild(opt);
+        
+        const sel = document.getElementById('cycle-selector');
+        const oldVal = sel.value;
+        sel.innerHTML = "";
+        cycles.slice().reverse().forEach(c => {
+            const o = document.createElement('option');
+            o.value = c.id;
+            o.textContent = `${c.label} • [${c.status}]`;
+            sel.appendChild(o);
         });
+        sel.value = oldVal && cycles.find(c => c.id == oldVal) ? oldVal : cycles[cycles.length-1].id;
     }
 
-    function renderPayoutView(cycleId) {
-        const cycle = processedCycles.find(c => c.id == cycleId);
-        if (!cycle) return;
+    function render() {
+        if (activeTab === 'payouts') {
+            const c = cycles.find(x => x.id == document.getElementById('cycle-selector').value);
+            if (!c) return;
 
-        // Ledger Math
-        document.getElementById('box-carryover').innerText = formatMoney(cycle.startBalance);
-        document.getElementById('box-new-earnings').innerText = formatMoney(cycle.newEarnings);
-        document.getElementById('box-total').innerText = formatMoney(cycle.totalBalance);
-        document.getElementById('box-share').innerText = formatMoney(cycle.totalBalance / 2);
+            document.getElementById('box-carryover').innerHTML = money(c.start);
+            document.getElementById('box-new-earnings').innerHTML = money(c.net);
+            document.getElementById('box-total').innerHTML = money(c.total);
+            document.getElementById('box-share').innerHTML = money(c.total / 2);
 
-        // Status Banner Generation
-        const banner = document.getElementById('payout-banner');
-        if (cycle.status === "CARRYOVER") {
-            banner.className = "mt-6 p-4 rounded-xl border bg-amber-500/10 border-amber-500/30 flex flex-col gap-1";
-            banner.innerHTML = `
-                <span class="text-amber-500 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-amber-500"></div> Balance Rolls Over</span>
-                <p class="text-slate-300 text-sm mt-1">Amount is under $100.00 threshold. It has been carried over to the next week.</p>
-            `;
-        } else if (cycle.status.includes("HOLD")) {
-            banner.className = "mt-6 p-4 rounded-xl border bg-blue-500/10 border-blue-500/30 flex flex-col gap-1";
-            banner.innerHTML = `
-                <span class="text-blue-400 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-blue-400"></div> Verification Hold</span>
-                <p class="text-slate-300 text-sm mt-1">Holding for fraud check. Expected Payment: <b>${formatShortDate(cycle.payoutDate)}</b>.</p>
-            `;
+            const ban = document.getElementById('payout-banner');
+            if (c.status === "CARRYOVER") {
+                ban.className = "p-4 rounded-xl border bg-amber-500/5 border-amber-500/20 text-amber-500 text-[10px] font-black uppercase";
+                ban.innerText = "Below $100.00 Minimum • Rolling to Next Period";
+            } else if (c.status === "VERIFYING") {
+                ban.className = "p-4 rounded-xl border bg-blue-500/5 border-blue-500/20 text-blue-400 text-[10px] font-black uppercase";
+                ban.innerText = `7-Day Hold Active • Est. Payment: ${fDate(c.payoutDate)}`;
+            } else {
+                ban.className = "p-4 rounded-xl border bg-emerald-500/5 border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase";
+                ban.innerText = "Funds Released / Audit Complete";
+            }
+
+            const daily = document.getElementById('daily-grid');
+            daily.innerHTML = "";
+            let dIter = new Date(parseInt(c.id));
+            for(let i=0; i<7; i++) {
+                const ds = fDate(dIter);
+                const val = c.data.filter(x => fDate(new Date(x._ts)) === ds).reduce((s, x) => s + x._wallet, 0);
+                daily.innerHTML += `
+                    <div class="bg-slate-900/40 p-3 rounded-xl flex-grow text-center border border-white/5">
+                        <p class="text-[9px] font-black text-slate-500 uppercase mb-1">${dIter.toLocaleDateString('en-US', {weekday:'short'})}</p>
+                        <p class="text-xs font-black mono">${money(val)}</p>
+                    </div>
+                `;
+                dIter = addDays(dIter, 1);
+            }
+            renderTable(c.data);
         } else {
-            banner.className = "mt-6 p-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 flex flex-col gap-1";
-            banner.innerHTML = `
-                <span class="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-400"></div> Funds Available</span>
-                <p class="text-slate-300 text-sm mt-1">Cycle complete. Scheduled Payment Date was: <b>${formatShortDate(cycle.payoutDate)}</b>.</p>
-            `;
+            const start = document.getElementById('filter-start').value;
+            const end = document.getElementById('filter-end').value;
+            let f = transactions;
+            if (start) f = f.filter(t => t._ts >= new Date(start + 'T00:00:00Z').getTime());
+            if (end) f = f.filter(t => t._ts <= new Date(end + 'T23:59:59Z').getTime());
+            
+            const total = f.reduce((s, x) => s + x._raw, 0);
+            document.getElementById('stat-events').innerText = f.length;
+            document.getElementById('stat-revenue').innerHTML = money(total);
+            document.getElementById('stat-share').innerHTML = money(total / 2);
+            renderTable(f.slice().reverse());
         }
-
-        // Daily Breakdown Grid
-        const dailyMap = {};
-        cycle.data.forEach(item => {
-            const dayStr = formatShortDate(new Date(item._ts));
-            dailyMap[dayStr] = safeMath((dailyMap[dayStr] || 0) + item._amount);
-        });
-
-        const grid = document.getElementById('daily-grid');
-        grid.innerHTML = "";
-        
-        // Ensure 7 days are represented even if 0
-        let tempDate = new Date(parseInt(cycleId));
-        for(let i=0; i<7; i++) {
-            const dStr = formatShortDate(tempDate);
-            const val = dailyMap[dStr] || 0;
-            grid.innerHTML += `
-                <div class="bg-slate-800/40 border border-slate-700/50 p-3 rounded-xl text-center">
-                    <p class="text-xs text-slate-400 font-bold mb-1">${tempDate.toLocaleDateString('en-US', {weekday:'short'})}</p>
-                    <p class="text-sm font-black ${val > 0 ? 'text-emerald-400' : 'text-slate-500'}">${formatMoney(val)}</p>
-                </div>
-            `;
-            tempDate = addDaysUTC(tempDate, 1);
-        }
-
-        el.tTitle.innerText = `Transactions: ${cycle.label}`;
-        renderTable(cycle.data);
     }
 
-    function applyAnalyticsFilter() {
-        const sVal = document.getElementById('filter-start').value;
-        const eVal = document.getElementById('filter-end').value;
+    function renderTable(arr) {
+        const body = document.getElementById('table-body');
+        body.innerHTML = "";
+        document.getElementById('table-count').innerText = `${arr.length} Logs`;
+        if (!arr.length) return document.getElementById('table-empty').classList.remove('hidden');
+        document.getElementById('table-empty').classList.add('hidden');
 
-        let filtered = allTransactions;
-        
-        if (sVal) {
-            const startTs = new Date(sVal + 'T00:00:00').getTime();
-            filtered = filtered.filter(t => t._ts >= startTs);
-        }
-        if (eVal) {
-            const endTs = new Date(eVal + 'T23:59:59').getTime();
-            filtered = filtered.filter(t => t._ts <= endTs);
-        }
-
-        const rev = filtered.reduce((sum, val) => sum + val._amount, 0);
-        
-        document.getElementById('stat-events').innerText = filtered.length;
-        document.getElementById('stat-revenue').innerText = formatMoney(rev);
-        document.getElementById('stat-share').innerText = formatMoney(rev / 2);
-        
-        el.tTitle.innerText = `Filtered Transactions`;
-        renderTable(filtered.slice().reverse()); // Newest first
-    }
-
-    function renderTable(dataArray) {
-        el.tBody.innerHTML = "";
-        el.tCount.innerText = `${dataArray.length} Records`;
-        
-        if (dataArray.length === 0) {
-            el.tEmpty.classList.remove('hidden');
-            return;
-        }
-        el.tEmpty.classList.add('hidden');
-
-        dataArray.forEach(item => {
-            const dateLocal = new Date(item._ts).toLocaleString('en-US', { 
-                month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'
-            });
-            
-            const badgeColor = item.event_type.toLowerCase().includes('reg') ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-slate-800 text-slate-300 border-slate-700';
-            
-            el.tBody.innerHTML += `
-                <tr class="hover:bg-slate-800/40 transition group">
-                    <td class="p-4 text-slate-400 font-mono text-xs">${dateLocal}</td>
-                    <td class="p-4"><span class="border px-2 py-1 rounded text-[10px] font-black tracking-wider ${badgeColor}">${item.event_type}</span></td>
-                    <td class="p-4 text-slate-300 font-mono text-xs">${item.user_id || '-'}</td>
-                    <td class="p-4 text-slate-400 text-xs">${item.country || '-'}</td>
-                    <td class="p-4 text-slate-400 text-xs truncate max-w-[120px]" title="${item.sub1}">${item.sub1 || '-'}</td>
-                    <td class="p-4 text-slate-500 font-mono text-[10px] group-hover:text-slate-300 transition">${item.transaction_id || '-'}</td>
-                    <td class="p-4 font-black text-right ${item._amount > 0 ? 'text-emerald-400' : 'text-slate-600'}">${formatMoney(item._amount)}</td>
+        arr.forEach(i => {
+            const isReg = i.event_type.toLowerCase().includes('reg');
+            const isProfit = PAYABLE_EVENTS.includes(i.event_type);
+            body.innerHTML += `
+                <tr class="hover:bg-white/5 transition border-b border-white/5">
+                    <td class="p-4 mono text-[10px] text-slate-500">${new Date(i._ts).toLocaleString()}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 rounded-[4px] font-black text-[9px] border ${isReg ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' : 'bg-slate-800 border-slate-700 text-slate-400'} uppercase tracking-tighter">${i.event_type}</span></td>
+                    <td class="p-4 mono text-emerald-500 text-[10px]">${i.user_id || '--'}</td>
+                    <td class="p-4 text-slate-400 uppercase text-[10px] font-bold">${i.country || '--'}</td>
+                    <td class="p-4 text-slate-500 text-[10px] truncate max-w-[100px]">${i.sub1 || '--'}</td>
+                    <td class="p-4 text-right mono text-[11px] font-black">
+                        ${money(i._raw)}
+                        ${!isProfit && i._raw > 0 ? '<span class="block text-[8px] text-slate-600 font-black uppercase tracking-widest mt-0.5">Tracking Only</span>' : ''}
+                    </td>
                 </tr>
             `;
         });
     }
 
-    // --- EVENT LISTENERS ---
+    function handleEmpty() {
+        document.getElementById('table-empty').classList.remove('hidden');
+    }
 
-    el.cycleSel.onchange = (e) => renderPayoutView(e.target.value);
-    
-    document.getElementById('btn-apply-filter').onclick = applyAnalyticsFilter;
+    // UI SWITCHES
+    document.getElementById('cycle-selector').onchange = render;
+    document.getElementById('btn-apply-filter').onclick = render;
     document.getElementById('btn-clear-filter').onclick = () => {
         document.getElementById('filter-start').value = "";
         document.getElementById('filter-end').value = "";
-        applyAnalyticsFilter();
+        render();
     };
-
-    // Tab Switching Logic
-    function switchTab(tab) {
-        currentActiveTab = tab;
-        if (tab === 'payouts') {
-            el.tabPayouts.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-active";
-            el.tabAnalytics.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-inactive";
-            el.viewPayouts.classList.remove('hidden');
-            el.viewPayouts.classList.add('flex');
-            el.viewAnalytics.classList.add('hidden');
-            el.viewAnalytics.classList.remove('flex');
-            if (processedCycles.length) renderPayoutView(el.cycleSel.value);
-        } else {
-            el.tabAnalytics.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-active";
-            el.tabPayouts.className = "pb-3 text-sm font-bold tracking-wide transition-all tab-inactive";
-            el.viewAnalytics.classList.remove('hidden');
-            el.viewAnalytics.classList.add('flex');
-            el.viewPayouts.classList.add('hidden');
-            el.viewPayouts.classList.remove('flex');
-            applyAnalyticsFilter();
-        }
-    }
-
-    el.tabPayouts.onclick = () => switchTab('payouts');
-    el.tabAnalytics.onclick = () => switchTab('analytics');
+    document.getElementById('tab-payouts').onclick = () => {
+        activeTab = 'payouts';
+        document.getElementById('tab-payouts').className = "pb-3 text-xs font-black tracking-widest tab-active uppercase";
+        document.getElementById('tab-analytics').className = "pb-3 text-xs font-black tracking-widest tab-inactive uppercase";
+        document.getElementById('view-payouts').classList.remove('hidden');
+        document.getElementById('view-analytics').classList.add('hidden');
+        render();
+    };
+    document.getElementById('tab-analytics').onclick = () => {
+        activeTab = 'analytics';
+        document.getElementById('tab-analytics').className = "pb-3 text-xs font-black tracking-widest tab-active uppercase";
+        document.getElementById('tab-payouts').className = "pb-3 text-xs font-black tracking-widest tab-inactive uppercase";
+        document.getElementById('view-analytics').classList.remove('hidden');
+        document.getElementById('view-payouts').classList.add('hidden');
+        render();
+    };
 
 </script>
 </body>
