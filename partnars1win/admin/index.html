@@ -15,6 +15,7 @@
 </head>
 <body class="p-4 md:p-8">
 
+<!-- LOGIN -->
 <div id="login-screen" class="max-w-md mx-auto mt-24 p-8 glass rounded-2xl shadow-2xl">
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-white">1win Admin Access</h1>
@@ -25,6 +26,7 @@
     <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition">Sign In</button>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" class="hidden max-w-7xl mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 glass p-6 rounded-2xl">
         <div>
@@ -40,6 +42,7 @@
         </div>
     </div>
 
+    <!-- SUMMARY CARDS -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div class="glass p-5 rounded-2xl border-l-4 border-emerald-500">
             <p class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Cycle Total (100%)</p>
@@ -89,7 +92,8 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    import { firebaseConfig } from '/configs/config.js';
+    // Path to your config file
+    import { firebaseConfig } from './config.js';
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -98,22 +102,18 @@
     const MIN_PAYOUT = 100.00;
     let processedCycles = [];
 
-    // --- Helper to fix problematic dates ---
+    // Helper: Safely parse various date formats
     function parseDateSafely(item) {
-        if (!item) return new Date();
-        let d = new Date(item.server_time);
-        // If server_time fails (like the old toLocaleString), try the Unix timestamp
-        if (isNaN(d.getTime()) && item.date_unix) {
-            d = new Date(parseInt(item.date_unix) * 1000);
-        }
-        // Last resort: use current date
+        if (!item || !item.server_time) return new Date();
+        const d = new Date(item.server_time);
         return isNaN(d.getTime()) ? new Date() : d;
     }
 
+    // Helper: Get Monday of the week
     function getMonday(d) {
         let date = new Date(d);
-        var day = date.getDay(),
-            diff = date.getDate() - day + (day == 0 ? -6 : 1);
+        const day = date.getDay();
+        const diff = date.getDate() - day + (day === 0 ? -6 : 1);
         const mon = new Date(date.setDate(diff));
         mon.setHours(0,0,0,0);
         return mon;
@@ -123,14 +123,16 @@
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
+    // UI Elements
     const loginScreen = document.getElementById('login-screen');
     const dashboard = document.getElementById('dashboard');
     const cycleSelector = document.getElementById('cycle-selector');
 
+    // Auth Logic
     document.getElementById('login-btn').onclick = () => {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
-        signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+        signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Login Failed: " + err.message));
     };
     document.getElementById('logout-btn').onclick = () => signOut(auth);
 
@@ -149,18 +151,22 @@
         const statsRef = ref(db, 'stats');
         onValue(statsRef, (snapshot) => {
             const rawData = snapshot.val();
-            if (!rawData) return;
+            if (!rawData) {
+                cycleSelector.innerHTML = "<option>No Data Available</option>";
+                return;
+            }
 
+            // 1. Process and Sanitize Items
             const items = Object.values(rawData).map(item => {
-                const parsedDate = parseDateSafely(item);
-                const amt = parseFloat(item.amount);
+                const pDate = parseDateSafely(item);
                 return {
                     ...item,
-                    _ts: parsedDate.getTime(),
-                    _amount: isNaN(amt) ? 0 : amt
+                    _ts: pDate.getTime(),
+                    _amount: parseFloat(item.amount) || 0
                 };
             }).sort((a, b) => a._ts - b._ts);
 
+            // 2. Group into Monday-Sunday Weeks
             const weeksMap = {};
             items.forEach(item => {
                 const mon = getMonday(item._ts);
@@ -175,26 +181,30 @@
                 weeksMap[key].data.push(item);
             });
 
+            // 3. Apply Carryover and Payout Logic
             processedCycles = [];
             let rollingCarryover = 0;
-            const sortedWeekKeys = Object.keys(weeksMap).sort();
+            const sortedKeys = Object.keys(weeksMap).sort();
 
-            sortedWeekKeys.forEach(key => {
+            sortedKeys.forEach(key => {
                 const week = weeksMap[key];
                 const totalBalance = week.earnings + rollingCarryover;
+                
+                // Hold ends 7 days after the Sunday of that week
                 const verificationEndDate = new Date(week.sunday);
                 verificationEndDate.setDate(verificationEndDate.getDate() + 7);
                 
+                // Payment is the following Tuesday
                 const payoutDate = new Date(verificationEndDate);
-                payoutDate.setDate(payoutDate.getDate() + ( (7 - payoutDate.getDay() + 2) % 7 || 7));
+                payoutDate.setDate(payoutDate.getDate() + ((7 - payoutDate.getDay() + 2) % 7 || 7));
 
                 let status = "";
                 if (totalBalance >= MIN_PAYOUT) {
                     status = (new Date() > verificationEndDate) ? "READY" : "IN_HOLD";
-                    rollingCarryover = 0;
+                    rollingCarryover = 0; // Balance cleared
                 } else {
                     status = "CARRYOVER";
-                    rollingCarryover = totalBalance;
+                    rollingCarryover = totalBalance; // Move to next week
                 }
 
                 processedCycles.push({
@@ -207,20 +217,19 @@
                 });
             });
 
-            const currentSelection = cycleSelector.value;
+            // 4. Update Dropdown
+            const currentVal = cycleSelector.value;
             cycleSelector.innerHTML = "";
-            processedCycles.slice().reverse().forEach(cycle => {
+            processedCycles.slice().reverse().forEach(c => {
                 const opt = document.createElement('option');
-                opt.value = cycle.id;
-                opt.textContent = `${cycle.label} (${cycle.status === 'CARRYOVER' ? 'Below $100' : '$'+cycle.totalBalance.toFixed(2)})`;
+                opt.value = c.id;
+                opt.textContent = `${c.label} (${c.status === 'CARRYOVER' ? 'Below $100' : '$'+c.totalBalance.toFixed(2)})`;
                 cycleSelector.appendChild(opt);
             });
 
-            if (processedCycles.length > 0) {
-                const toRender = currentSelection || processedCycles[processedCycles.length - 1].id;
-                cycleSelector.value = toRender;
-                renderDashboard(toRender);
-            }
+            const toRender = currentVal && weeksMap[currentVal] ? currentVal : processedCycles[processedCycles.length - 1].id;
+            cycleSelector.value = toRender;
+            renderDashboard(toRender);
         });
     }
 
@@ -228,6 +237,7 @@
         const cycle = processedCycles.find(c => c.id == cycleId);
         if (!cycle) return;
 
+        // Update Boxes
         document.getElementById('box-total-rev').innerText = `$${cycle.totalBalance.toFixed(2)}`;
         document.getElementById('box-partner-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
         document.getElementById('box-my-share').innerText = `$${(cycle.totalBalance / 2).toFixed(2)}`;
@@ -249,40 +259,41 @@
             payDateEl.className = "text-lg font-bold text-emerald-400 mt-1";
         }
 
+        // Table
         const tbody = document.getElementById('table-body');
         tbody.innerHTML = "";
         cycle.data.slice().reverse().forEach(item => {
-            const row = `
+            tbody.innerHTML += `
                 <tr class="hover:bg-slate-800/30 transition">
                     <td class="p-4 text-slate-400 font-mono text-xs">${new Date(item._ts).toLocaleString()}</td>
                     <td class="p-4"><span class="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold">${item.event_type}</span></td>
-                    <td class="p-4 text-emerald-400 font-mono text-xs">${item.user_id || '--'}</td>
+                    <td class="p-4 text-emerald-400 font-mono text-xs">${item.user_id}</td>
                     <td class="p-4 font-bold ${item._amount > 0 ? 'text-emerald-400' : 'text-slate-500'}">$${item._amount.toFixed(2)}</td>
                 </tr>
             `;
-            tbody.innerHTML += row;
         });
 
+        // Daily Breakdown
         const dailyMap = {};
         cycle.data.forEach(item => {
-            const d = formatDate(new Date(item._ts));
-            if(!dailyMap[d]) dailyMap[d] = 0;
-            dailyMap[d] += item._amount;
+            const day = formatDate(new Date(item._ts));
+            dailyMap[day] = (dailyMap[day] || 0) + item._amount;
         });
 
         const dailyList = document.getElementById('daily-list');
         dailyList.innerHTML = "";
-        Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a)).forEach(date => {
+        Object.keys(dailyMap).sort((a,b) => new Date(b) - new Date(a)).forEach(day => {
             dailyList.innerHTML += `
                 <div class="p-4 bg-slate-800/30 border border-slate-700/50 rounded-xl flex justify-between items-center">
-                    <p class="text-sm font-bold text-slate-200">${date}</p>
-                    <p class="text-lg font-black text-emerald-400">$${dailyMap[date].toFixed(2)}</p>
+                    <p class="text-sm font-bold text-slate-200">${day}</p>
+                    <p class="text-lg font-black text-emerald-400">$${dailyMap[day].toFixed(2)}</p>
                 </div>
             `;
         });
     }
 
     cycleSelector.onchange = (e) => renderDashboard(e.target.value);
+
 </script>
 </body>
 </html>
