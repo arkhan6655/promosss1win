@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1win Advanced Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="login-screen" class="max-w-md mx-auto mt-20 p-8 glass rounded-2xl">
+        <h1 class="text-2xl font-bold mb-6 text-center text-green-400">Admin Authentication</h1>
+        <input type="email" id="email" placeholder="Email" class="w-full p-3 mb-4 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:border-green-500">
+        <input type="password" id="password" placeholder="Password" class="w-full p-3 mb-6 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:border-green-500">
+        <button id="login-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition">Enter Dashboard</button>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-green-400 tracking-tight">1win Analytics <span class="text-sm font-normal text-slate-400">Live Feed</span></h1>
+            <button id="logout-btn" class="bg-red-500/20 text-red-400 border border-red-500/50 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">Logout</button>
+        </div>
+
+        <!-- Analytics Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="glass p-6 rounded-xl">
+                <p class="text-slate-400 text-sm">Total Registrations</p>
+                <p id="stat-reg" class="text-2xl font-bold text-blue-400">0</p>
+            </div>
+            <div class="glass p-6 rounded-xl">
+                <p class="text-slate-400 text-sm">Total Deposits</p>
+                <p id="stat-dep" class="text-2xl font-bold text-green-400">0</p>
+            </div>
+            <div class="glass p-6 rounded-xl">
+                <p class="text-slate-400 text-sm">Total Revenue</p>
+                <p id="stat-rev" class="text-2xl font-bold text-yellow-400">$0.00</p>
+            </div>
+            <div class="glass p-6 rounded-xl">
+                <p class="text-slate-400 text-sm">First Deposits</p>
+                <p id="stat-first" class="text-2xl font-bold text-purple-400">0</p>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="glass rounded-xl overflow-hidden">
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-800/50 text-slate-300 text-xs uppercase">
+                        <tr>
+                            <th class="p-4">Time</th>
+                            <th class="p-4">Event</th>
+                            <th class="p-4">User ID</th>
+                            <th class="p-4">Amount</th>
+                            <th class="p-4">Country</th>
+                            <th class="p-4">Source</th>
+                            <th class="p-4">Sub1</th>
+                            <th class="p-4">Transaction ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table" class="text-sm divide-y divide-slate-700/50">
+                        <!-- Rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // CONFIG: Replace with your details
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // UI Elements
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+
+        document.getElementById('login-btn').onclick = () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+        };
+
+        document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginScreen.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                loadAnalytics();
+            } else {
+                loginScreen.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+            }
+        });
+
+        function loadAnalytics() {
+            const statsRef = ref(db, 'stats');
+            onValue(statsRef, (snapshot) => {
+                const data = snapshot.val();
+                const tbody = document.getElementById('data-table');
+                tbody.innerHTML = "";
+
+                let regCount = 0, depCount = 0, totalRev = 0, firstDep = 0;
+
+                if (data) {
+                    const items = Object.values(data).reverse();
+                    items.forEach(item => {
+                        // Calculate Statistics
+                        if(item.event_type === 'Registration') regCount++;
+                        if(item.event_type.includes('Deposit')) depCount++;
+                        if(item.event_type === 'First_Deposit') firstDep++;
+                        totalRev += parseFloat(item.amount || 0);
+
+                        // Create Row
+                        const row = `
+                            <tr class="hover:bg-slate-700/30 transition">
+                                <td class="p-4 text-slate-400 whitespace-nowrap">${item.server_time}</td>
+                                <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${getBadgeClass(item.event_type)}">${item.event_type}</span></td>
+                                <td class="p-4 font-mono text-green-400">${item.user_id}</td>
+                                <td class="p-4 font-bold text-white">$${item.amount}</td>
+                                <td class="p-4">${item.country}</td>
+                                <td class="p-4 text-slate-400 text-xs">${item.source_name || 'Direct'}</td>
+                                <td class="p-4 text-slate-400">${item.sub1}</td>
+                                <td class="p-4 text-xs font-mono text-slate-500">${item.transaction_id || 'N/A'}</td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+
+                    // Update UI Stats
+                    document.getElementById('stat-reg').innerText = regCount;
+                    document.getElementById('stat-dep').innerText = depCount;
+                    document.getElementById('stat-first').innerText = firstDep;
+                    document.getElementById('stat-rev').innerText = "$" + totalRev.toFixed(2);
+                }
+            });
+        }
+
+        function getBadgeClass(type) {
+            if(type === 'Registration') return 'bg-blue-500/20 text-blue-400';
+            if(type.includes('Deposit')) return 'bg-green-500/20 text-green-400';
+            if(type === 'Revenue') return 'bg-yellow-500/20 text-yellow-400';
+            return 'bg-slate-500/20 text-slate-400';
+        }
+    </script>
+</body>
+</html>
