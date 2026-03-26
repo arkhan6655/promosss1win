@@ -358,7 +358,7 @@
             if (start) f = f.filter(t => t._ts >= new Date(start + 'T00:00:00Z').getTime());
             if (end) f = f.filter(t => t._ts <= new Date(end + 'T23:59:59Z').getTime());
             
-            const total = f.reduce((s, x) => s + x._raw, 0);
+            const total = f.reduce((s, x) => s + x._wallet, 0);
             document.getElementById('stat-events').innerText = f.length;
             document.getElementById('stat-revenue').innerHTML = money(total);
             document.getElementById('stat-share').innerHTML = money(total / 2);
